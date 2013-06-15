@@ -196,11 +196,11 @@ list_splice_init(struct list_head *list, struct list_head *head) {
     for (pos = (head)->next; pos != (head); \
             pos = pos->next)
 /**
- * list_for_each_prev - iterate over a list backwards
+ * list_for_each_reverse - iterate over a list backwards
  * @pos: the &struct list_head to use as a loop counter.
  * @head: the head for your list.
  */
-#define list_for_each_prev(pos, head) \
+#define list_for_each_reverse(pos, head) \
     for (pos = (head)->prev; pos != (head); \
             pos = pos->prev)
             
@@ -220,9 +220,9 @@ list_splice_init(struct list_head *list, struct list_head *head) {
  * @head: the head for your list.
  * @member: the name of the list_struct within the struct.
  */
-#define list_for_each_entry(pos, head, member)                \
-    for (pos = list_entry((head)->next, typeof(*pos), member);    \
-         &pos->member != (head);                     \
+#define list_for_each_entry(pos, head, member) \
+    for (pos = list_entry((head)->next, typeof(*pos), member); \
+         &pos->member != (head); \
          pos = list_entry(pos->member.next, typeof(*pos), member))
 
 /**
@@ -232,10 +232,24 @@ list_splice_init(struct list_head *list, struct list_head *head) {
  * @head: the head for your list.
  * @member: the name of the list_struct within the struct.
  */
-#define list_for_each_entry_safe(pos, n, head, member)            \
-    for (pos = list_entry((head)->next, typeof(*pos), member),    \
-        n = list_entry(pos->member.next, typeof(*pos), member);    \
-         &pos->member != (head);                     \
+#define list_for_each_entry_safe(pos, n, head, member) \
+    for (pos = list_entry((head)->next, typeof(*pos), member), \
+         n = list_entry(pos->member.next, typeof(*pos), member); \
+         &pos->member != (head); \
          pos = n, n = list_entry(n->member.next, typeof(*n), member))
 
+/**
+ * list_for_each_entry_safe_reverse - as above but reverse iteration
+ * @pos: the type * to use as a loop counter.
+ * @n: another type * to use as temporary storage
+ * @head: the head for your list.
+ * @member: the name of the list_struct within the struct.
+ */
+#define list_for_each_entry_safe_reverse(pos, n, head, member) \
+    for (pos = list_entry((head)->next, typeof(*pos), member), \
+         n = list_entry(pos->member.next, typeof(*pos), member); \
+         &pos->member != (head); \
+         pos = n, n = list_entry(n->member.next, typeof(*n), member))
+
+#endif
 #endif
