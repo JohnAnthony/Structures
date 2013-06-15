@@ -252,4 +252,3 @@ list_splice_init(struct list_head *list, struct list_head *head) {
          pos = n, n = list_entry(n->member.prev, typeof(*n), member))
 
 #endif
-#endif
