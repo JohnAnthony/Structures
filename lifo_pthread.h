@@ -1,15 +1,16 @@
 /*
  * Simple lifo (stack) implementation.
- * This is *not* thread safe. Possible future additions may include
- * blocking, but this may only be availble in the threadsafe version
+ * This is a variation of lifo.h with thread safety for use with
+ * pthreads.
  *
  * @TODO: Thorough testing, DECLARE_LIFO, INIT_LIFO
  *
  * Created by John Anthony. See LICENSE file for licensing information.
  */
 
-#ifndef __LIFO_H
-#define __LIFO_H
+#ifndef __LIFO_PTHREAD_H
+#define __LIFO_PTHREAD_H
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +22,7 @@ struct lifo {
     void *base;
     void *tip;
     void *end;
+    pthread_mutex_t mutex;
 };
 
 /**
@@ -35,6 +37,7 @@ lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
     lifo->base = buffer;
     lifo->tip = lifo->base;
     lifo->end = lifo->base + sz;
+    pthread_mutex_init(&lifo->mutex, NULL);
     return true;
 }
 
@@ -57,9 +60,11 @@ lifo_alloc(struct lifo *lifo, size_t sz) {
  */
 static inline size_t
 lifo_in(struct lifo *lifo, const void *from, size_t len) {
+    pthread_mutex_lock(&lifo->mutex);
     len = MIN(len, lifo->size - (size_t)lifo->tip);
     memcpy(lifo->tip, from, len);
     lifo->tip += len;
+    pthread_mutex_unlock(&lifo->mutex);
     return len;
 }
 
@@ -71,9 +76,11 @@ lifo_in(struct lifo *lifo, const void *from, size_t len) {
  */
 static inline size_t
 lifo_out(struct lifo *lifo, void *to, size_t len) {
+    pthread_mutex_lock(&lifo->mutex);
     len = MIN(len, lifo->tip - lifo->base);
     lifo->tip -= len;
     memcpy(to, lifo->tip, len);
+    pthread_mutex_unlock(&lifo->mutex);
     return len;
 }
 
@@ -87,9 +94,11 @@ static inline size_t
 lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
     void *tmp_tip;
     
+    pthread_mutex_lock(&lifo->mutex);
     len = MIN(len, lifo->tip - lifo->base);
     tmp_tip = lifo->tip - len;
     memcpy(to, tmp_tip, len);
+    pthread_mutex_unlock(&lifo->mutex);
     return len;
 }
 
