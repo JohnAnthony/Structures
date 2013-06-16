@@ -3,7 +3,7 @@
  * This is *not* thread safe. Possible future additions may include
  * blocking, but this may only be availble in the threadsafe version
  *
- * @TODO: Thorough testing
+ * @TODO: Thorough testing, DECLARE_LIFO, INIT_LIFO
  *
  * Created by John Anthony. See LICENSE file for licensing information.
  */
@@ -27,7 +27,7 @@ struct lifo {
  * lifo_init - create a new lifo with provided buffer
  * @lifo: lifo struct to work on
  * @buffer: Piece of memory to use as the lifo's stack space
- * @sz: size of buffer to be allocated
+ * @sz: size of buffer provided
  */
 static inline bool
 lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
@@ -39,7 +39,7 @@ lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
 }
 
 /**
- * lifo_alloc - create a new lifo with dynamic buffer
+ * lifo_alloc - create a new lifo and dynamic buffer
  * @lifo: lifo struct to work on
  * @sz: size of buffer to be allocated
  */
