@@ -57,7 +57,7 @@ lifo_alloc(struct lifo *lifo, size_t sz) {
  */
 static inline size_t
 lifo_in(struct lifo *lifo, const void *from, size_t len) {
-    len = MIN(len, lifo->size - (size_t)lifo->tip);
+    len = MIN(len, lifo->end - lifo->tip);
     memcpy(lifo->tip, from, len);
     lifo->tip += len;
     return len;
