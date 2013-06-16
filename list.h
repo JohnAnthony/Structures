@@ -1,6 +1,3 @@
-#ifndef __LIST_H
-#define __LIST_H
-
 /* This file is from the Linux Kernel (include/linux/list.h) 
  * and modified by simply removing hardware prefetching of list items. 
  * Copyright, credits attributed to wherever they belong.
@@ -18,6 +15,8 @@
  * using the generic single-entry routines.
  */
 
+#ifndef __LIST_H
+#define __LIST_H
 #include <stdbool.h>
 
 struct list_head {
