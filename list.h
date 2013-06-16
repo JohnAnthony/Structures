@@ -274,13 +274,12 @@ list_splice_init(struct list_head *list, struct list_head *head) {
 /**
  * list_len - count number of elements in the given list
  * @head: the head for your list
- * Note: This is a O(1) time operation and should be used sparingly
+ * Note: This is a O(n) time operation and should be used sparingly
  */
 static inline size_t
 list_len(struct list_head *head) {
     struct list_head *iter;
     size_t count = 0;
-
     list_for_each(iter, head)
         ++count;
     return count;
