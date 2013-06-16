@@ -3,7 +3,7 @@
  * This is *not* thread safe. Possible future additions may include
  * blocking, but this may only be availble in the threadsafe version
  *
- * @TODO: Doxygen, thorough testing
+ * @TODO: Thorough testing
  *
  * Created by John Anthony. See LICENSE file for licensing information.
  */
@@ -49,6 +49,12 @@ lifo_alloc(struct lifo *lifo, size_t sz) {
     return buffer ? lifo_init(lifo, buffer, sz) : false;
 }
 
+/**
+ * lifo_in - add data to the stack
+ * @lifo: lifo struct to work on
+ * @from: memory to copy from
+ * @len: number of bytes to copy
+ */
 static inline size_t
 lifo_in(struct lifo *lifo, const void *from, size_t len) {
     len = MIN(len, lifo->size - (size_t)lifo->tip);
@@ -57,6 +63,12 @@ lifo_in(struct lifo *lifo, const void *from, size_t len) {
     return len;
 }
 
+/**
+ * lifo_out - remove data from the stack
+ * @lifo: lifo struct to work on
+ * @to: memory to copy to
+ * @len: number of bytes to copy
+ */
 static inline size_t
 lifo_out(struct lifo *lifo, void *to, size_t len) {
     len = MIN(len, lifo->tip - lifo->base);
@@ -65,6 +77,12 @@ lifo_out(struct lifo *lifo, void *to, size_t len) {
     return len;
 }
 
+/**
+ * lifo_out_peek - recover data from stack without moving tip
+ * @lifo: lifo struct to work on
+ * @to: memory to copy to
+ * @len: number of bytes to copy
+ */
 static inline size_t
 lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
     void *tmp_tip;
@@ -75,31 +93,64 @@ lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
     return len;
 }
 
+/**
+ * lifo_sz - get the buffer size of a lifo
+ * @lifo: lifo struct to test
+ */
+static inline size_t
+lifo_sz(struct lifo *lifo) {
+    return lifo->size;
+}
+
+/**
+ * lifo_len - report amount of space used in lifo's buffer
+ * @lifo: lifo struct to test
+ */
 static inline size_t
 lifo_len(struct lifo *lifo) {
     return lifo->tip - lifo->base;
 }
 
+/**
+ * lifo_avail - report amount of available space in a lifo's buffer
+ * @lifo: lifo struct to test
+ */
 static inline size_t
 lifo_avail(struct lifo *lifo) {
     return lifo->end - lifo->tip;
 }
 
+/**
+ * lifo_is_empty - test for zero bytes of buffer used in lifo
+ * @lifo: lifo struct to test
+ */
 static inline bool
 lifo_is_empty(struct lifo *lifo) {
     return lifo->tip == lifo->base;
 }
 
+/**
+ * lifo_is_full - test for zero bytes of buffer available in lifo
+ * @lifo: lifo struct to test
+ */
 static inline bool
 lifo_is_full(struct lifo *lifo) {
     return lifo->tip == lifo->end;
 }
 
+/**
+ * lifo_reset - empty a lifo ready for new use
+ * @lifo: lifo struct to test
+ */
 static inline void
 lifo_reset(struct lifo *lifo) {
     lifo->tip = lifo->base;
 }
 
+/**
+ * lifo_free - release memory used by a dynamically allocated lifo
+ * @lifo: lifo struct to test
+ */
 lifo_free(struct lifo *lifo) {
     free(lifo->base);
     free(lifo);
