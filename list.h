@@ -1,10 +1,3 @@
-/* This file is from the Linux Kernel (include/linux/list.h) 
- * and modified by simply removing hardware prefetching of list items. 
- * Copyright, credits attributed to wherever they belong.
- * Kulesh Shanmugasundaram (kulesh [squiggly] isis.poly.edu)
- * Modified to round out my personal collection by John Anthony
- */
-
 /*
  * Simple doubly linked list implementation.
  *
@@ -13,6 +6,11 @@
  * sometimes we already know the next/prev entries and we can
  * generate better code by using them directly rather than
  * using the generic single-entry routines.
+ *
+ *
+ * Based upon the Linux Kernel implementation and generalised by John
+ * Anthony. Please see LICENSE file for information on my edits and
+ * the Linux kernel for additional licensing information.
  */
 
 #ifndef __LIST_H
