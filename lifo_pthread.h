@@ -8,9 +8,9 @@
  * Created by John Anthony. See LICENSE file for licensing information.
  */
 
-#ifndef __LIFO_PTHREAD_H
-#define __LIFO_PTHREAD_H
-#include <pthread.h>
+#ifndef __LIFO_SAFE_H
+#define __LIFO_SAFE_H
+#include <semaphore.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +22,7 @@ struct lifo {
     void *base;
     void *tip;
     void *end;
-    pthread_mutex_t mutex;
+    sem_t sem;
 };
 
 /**
@@ -37,7 +37,7 @@ lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
     lifo->base = buffer;
     lifo->tip = lifo->base;
     lifo->end = lifo->base + sz;
-    pthread_mutex_init(&lifo->mutex, NULL);
+    sem_init(&lifo->sem, 0, 1);
     return true;
 }
 
@@ -60,11 +60,11 @@ lifo_alloc(struct lifo *lifo, size_t sz) {
  */
 static inline size_t
 lifo_in(struct lifo *lifo, const void *from, size_t len) {
-    pthread_mutex_lock(&lifo->mutex);
+    sem_wait(&lifo->sem);
     len = MIN(len, lifo->end - lifo->tip);
     memcpy(lifo->tip, from, len);
     lifo->tip += len;
-    pthread_mutex_unlock(&lifo->mutex);
+    sem_post(&lifo->sem);
     return len;
 }
 
@@ -76,11 +76,11 @@ lifo_in(struct lifo *lifo, const void *from, size_t len) {
  */
 static inline size_t
 lifo_out(struct lifo *lifo, void *to, size_t len) {
-    pthread_mutex_lock(&lifo->mutex);
+    sem_wait(&lifo->sem);
     len = MIN(len, lifo->tip - lifo->base);
     lifo->tip -= len;
     memcpy(to, lifo->tip, len);
-    pthread_mutex_unlock(&lifo->mutex);
+    sem_post(&lifo->sem);
     return len;
 }
 
@@ -94,11 +94,11 @@ static inline size_t
 lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
     void *tmp_tip;
     
-    pthread_mutex_lock(&lifo->mutex);
+    sem_wait(&lifo->sem);
     len = MIN(len, lifo->tip - lifo->base);
     tmp_tip = lifo->tip - len;
     memcpy(to, tmp_tip, len);
-    pthread_mutex_unlock(&lifo->mutex);
+    sem_post(&lifo->sem);
     return len;
 }
 
@@ -154,6 +154,8 @@ lifo_is_full(struct lifo *lifo) {
 static inline void
 lifo_reset(struct lifo *lifo) {
     lifo->tip = lifo->base;
+    sem_destroy(&lifo->sem);
+    sem_init(&lifo->sem, 0, 1);
 }
 
 /**
@@ -161,6 +163,7 @@ lifo_reset(struct lifo *lifo) {
  * @lifo: lifo struct to test
  */
 lifo_free(struct lifo *lifo) {
+    sem_destroy(&lifo->sem);
     free(lifo->base);
     free(lifo);
 }
