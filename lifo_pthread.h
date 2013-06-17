@@ -1,7 +1,7 @@
 /*
  * Simple lifo (stack) implementation.
  * This is a variation of lifo.h with thread safety for use with
- * pthreads.
+ * POSIX semaphores
  *
  * @TODO: Thorough testing, DECLARE_LIFO, INIT_LIFO
  *
