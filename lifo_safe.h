@@ -209,6 +209,7 @@ lifo_reset(struct lifo *lifo) {
  * lifo_free - release memory used by a dynamically allocated lifo
  * @lifo: lifo struct to test
  */
+static inline void
 lifo_free(struct lifo *lifo) {
     sem_destroy(&lifo->sem);
     free(lifo->base);
