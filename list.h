@@ -17,7 +17,9 @@
 #define __LIST_H
 #include <stdbool.h>
 
-#warning "Whatever"
+#ifdef SAFE_DATA_STRUCTURES
+#warning list.h does not currently support thread safety
+#endif /* SAFE_DATA_STRUCTURES */
 
 struct list_head {
     struct list_head *next;
