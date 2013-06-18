@@ -136,6 +136,19 @@ lifo_is_full(struct lifo *lifo) {
     return lifo->tip == lifo->end;
 }
 
+static inline bool
+lifo_resize(struct lifo *lifo, size_t sz) {
+    void *buffer;
+
+    buffer = realloc(lifo->base, sz);
+    if (!buffer)
+        return false;
+    lifo->tip = lifo->tip - lifo->base + buffer;
+    lifo->end = lifo->end - lifo->base + buffer;
+    lifo->base = buffer;
+    return true;
+}
+
 /**
  * lifo_reset - empty a lifo ready for new use
  * @lifo: lifo struct to test
