@@ -17,7 +17,6 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 struct lifo {
-    size_t size;
     void *base;
     void *tip;
     void *end;
@@ -31,7 +30,6 @@ struct lifo {
  */
 static inline bool
 lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
-    lifo->size = sz;
     lifo->base = buffer;
     lifo->tip = lifo->base;
     lifo->end = lifo->base + sz;
@@ -99,7 +97,7 @@ lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
  */
 static inline size_t
 lifo_sz(struct lifo *lifo) {
-    return lifo->size;
+    return lifo->end - lifo->base;
 }
 
 /**

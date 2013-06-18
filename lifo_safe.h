@@ -18,7 +18,6 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 struct lifo {
-    size_t size;
     void *base;
     void *tip;
     void *end;
@@ -33,7 +32,6 @@ struct lifo {
  */
 static inline bool
 lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
-    lifo->size = sz;
     lifo->base = buffer;
     lifo->tip = lifo->base;
     lifo->end = lifo->base + sz;
@@ -108,7 +106,12 @@ lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
  */
 static inline size_t
 lifo_sz(struct lifo *lifo) {
-    return lifo->size;
+    size_t ret;
+
+    sem_wait(&lifo->sem);
+    ret = lifo->end - lifo->base;
+    sem_post(&lifo->sem);
+    return ret;
 }
 
 /**
@@ -117,7 +120,12 @@ lifo_sz(struct lifo *lifo) {
  */
 static inline size_t
 lifo_len(struct lifo *lifo) {
-    return lifo->tip - lifo->base;
+    size_t ret;
+
+    sem_wait(&lifo->sem);
+    ret = lifo->tip - lifo->base;
+    sem_post(&lifo->sem);
+    return ret;
 }
 
 /**
@@ -126,7 +134,12 @@ lifo_len(struct lifo *lifo) {
  */
 static inline size_t
 lifo_avail(struct lifo *lifo) {
-    return lifo->end - lifo->tip;
+    size_t ret;
+
+    sem_wait(&lifo->sem);
+    ret = lifo->end - lifo->tip;
+    sem_post(&lifo->sem);
+    return ret;
 }
 
 /**
@@ -135,7 +148,12 @@ lifo_avail(struct lifo *lifo) {
  */
 static inline bool
 lifo_is_empty(struct lifo *lifo) {
-    return lifo->tip == lifo->base;
+    bool ret;
+
+    sem_wait(&lifo->sem);
+    ret = lifo->tip == lifo->base;
+    sem_post(&lifo->sem);
+    return ret;
 }
 
 /**
@@ -144,7 +162,12 @@ lifo_is_empty(struct lifo *lifo) {
  */
 static inline bool
 lifo_is_full(struct lifo *lifo) {
-    return lifo->tip == lifo->end;
+    bool ret;
+
+    sem_wait(&lifo->sem);
+    ret = lifo->tip == lifo->end;
+    sem_post(&lifo->sem);
+    return ret;
 }
 
 /**
@@ -153,7 +176,9 @@ lifo_is_full(struct lifo *lifo) {
  */
 static inline void
 lifo_reset(struct lifo *lifo) {
+    sem_wait(&lifo->sem);
     lifo->tip = lifo->base;
+    sem_post(&lifo->sem);
     sem_destroy(&lifo->sem);
     sem_init(&lifo->sem, 0, 1);
 }
