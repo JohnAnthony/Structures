@@ -2,6 +2,7 @@
  * Simple lifo (stack) implementation.
  * This is a variation of lifo.h with thread safety for use with
  * POSIX semaphores
+ *
  * If you need thread safety, define SAFE_DATA_STRUCTURES before
  * including this header
  *
