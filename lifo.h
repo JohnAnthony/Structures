@@ -3,8 +3,8 @@
  * This is a variation of lifo.h with thread safety for use with
  * POSIX semaphores
  *
- * If you need thread safety, define SAFE_DATA_STRUCTURES before
- * including this header
+ * If you need thread safety, define SAFE_DATA_STRUCTURES or
+ * SAFE_LIFOS before including this header
  *
  * @TODO: Thorough testing, DECLARE_LIFO & INIT_LIFO - static lifos
  *
@@ -18,13 +18,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef SAFE_DATA_STRUCTURES
+#define SAFE_LIFOS
+#endif /* SAFE_DATA_STRUCTURES */
+
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 struct lifo {
     void *base;
     void *tip;
     void *end;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_t sem;
 #endif
 };
@@ -40,9 +44,9 @@ lifo_init(struct lifo *lifo, void *buffer, size_t sz) {
     lifo->base = buffer;
     lifo->tip = lifo->base;
     lifo->end = lifo->base + sz;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_init(&lifo->sem, 0, 1);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return true;
 }
 
@@ -65,15 +69,15 @@ lifo_alloc(struct lifo *lifo, size_t sz) {
  */
 static size_t
 lifo_in(struct lifo *lifo, const void *from, size_t len) {
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     len = MIN(len, lifo->end - lifo->tip);
     memcpy(lifo->tip, from, len);
     lifo->tip += len;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return len;
 }
 
@@ -85,15 +89,15 @@ lifo_in(struct lifo *lifo, const void *from, size_t len) {
  */
 static size_t
 lifo_out(struct lifo *lifo, void *to, size_t len) {
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     len = MIN(len, lifo->tip - lifo->base);
     lifo->tip -= len;
     memcpy(to, lifo->tip, len);
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return len;
 }
 
@@ -107,15 +111,15 @@ static size_t
 lifo_out_peek(struct lifo *lifo, void *to, size_t len) {
     void *tmp_tip;
     
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     len = MIN(len, lifo->tip - lifo->base);
     tmp_tip = lifo->tip - len;
     memcpy(to, tmp_tip, len);
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return len;
 }
 
@@ -127,13 +131,13 @@ static size_t
 lifo_sz(struct lifo *lifo) {
     size_t ret;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     ret = lifo->end - lifo->base;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return ret;
 }
 
@@ -145,13 +149,13 @@ static size_t
 lifo_len(struct lifo *lifo) {
     size_t ret;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     ret = lifo->tip - lifo->base;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return ret;
 }
 
@@ -163,13 +167,13 @@ static size_t
 lifo_avail(struct lifo *lifo) {
     size_t ret;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     ret = lifo->end - lifo->tip;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return ret;
 }
 
@@ -181,13 +185,13 @@ static bool
 lifo_is_empty(struct lifo *lifo) {
     bool ret;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     ret = lifo->tip == lifo->base;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return ret;
 }
 
@@ -199,13 +203,13 @@ static bool
 lifo_is_full(struct lifo *lifo) {
     bool ret;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     ret = lifo->tip == lifo->end;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return ret;
 }
 
@@ -218,22 +222,22 @@ static bool
 lifo_resize(struct lifo *lifo, size_t sz) {
     void *buffer;
 
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     buffer = realloc(lifo->base, sz);
     if (!buffer) {
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
         sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
         return false;
     }
     lifo->tip = lifo->tip - lifo->base + buffer;
     lifo->end = lifo->end - lifo->base + buffer;
     lifo->base = buffer;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     return true;
 }
 
@@ -243,15 +247,15 @@ lifo_resize(struct lifo *lifo, size_t sz) {
  */
 static void
 lifo_reset(struct lifo *lifo) {
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_wait(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     lifo->tip = lifo->base;
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_post(&lifo->sem);
     sem_destroy(&lifo->sem);
     sem_init(&lifo->sem, 0, 1);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
 }
 
 /**
@@ -260,9 +264,9 @@ lifo_reset(struct lifo *lifo) {
  */
 static inline void
 lifo_free(struct lifo *lifo) {
-#ifdef SAFE_DATA_STRUCTURES
+#ifdef SAFE_LIFOS
     sem_destroy(&lifo->sem);
-#endif /* SAFE_DATA_STRUCTURES */
+#endif /* SAFE_LIFOS */
     free(lifo->base);
     free(lifo);
 }

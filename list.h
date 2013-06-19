@@ -18,7 +18,7 @@
 #include <stdbool.h>
 
 #ifdef SAFE_DATA_STRUCTURES
-#warning list.h does not currently support thread safety
+    #warning list.h does not currently support thread safety
 #endif /* SAFE_DATA_STRUCTURES */
 
 struct list_head {
@@ -28,7 +28,7 @@ struct list_head {
 
 #define LIST_HEAD_INIT(name) { &(name), &(name) }
 
-#define LIST_HEAD(name) \
+define LIST_HEAD(name) \
     struct list_head name = LIST_HEAD_INIT(name)
 
 #define INIT_LIST_HEAD(ptr) do { \
