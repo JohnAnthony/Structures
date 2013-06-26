@@ -18,8 +18,12 @@
 #include <stdbool.h>
 
 #ifdef SAFE_DATA_STRUCTURES
-    #warning list.h does not currently support thread safety
+#define SAFE_LISTS
 #endif /* SAFE_DATA_STRUCTURES */
+
+#ifdef SAFE_LISTS
+    #warning list.h does not currently support thread safety
+#endif /* SAFE_LISTS */
 
 struct list_head {
     struct list_head *next;
