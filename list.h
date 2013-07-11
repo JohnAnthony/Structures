@@ -16,6 +16,7 @@
 #ifndef __LIST_H
 #define __LIST_H
 #include <stdbool.h>
+#include <stdlib.h>
 
 #ifdef SAFE_DATA_STRUCTURES
 #define SAFE_LISTS
@@ -32,7 +33,7 @@ struct list_head {
 
 #define LIST_HEAD_INIT(name) { &(name), &(name) }
 
-define LIST_HEAD(name) \
+#define LIST_HEAD(name) \
     struct list_head name = LIST_HEAD_INIT(name)
 
 #define INIT_LIST_HEAD(ptr) do { \
