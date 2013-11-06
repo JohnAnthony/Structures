@@ -1,7 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 
-void list_init(struct list *list) {
+void list_init(/*@out@*/ struct list *list) {
     list->head = NULL;
 }
 
@@ -19,25 +19,27 @@ void list_destroy(struct list *list, void (*destroy)(void *data)) {
     }
 }
 
-int list_ins_head(struct list *list, const void *data) {
+int list_ins_head(struct list *list, void *data) {
     struct list_elem *elem;
 
     elem = malloc(sizeof(struct list_elem));
     if (elem == NULL)
         return -1;
     elem->next = list->head;
+    elem->data = data;
     list->head = elem;
     
     return 0;
 }
 
-int list_ins_next(struct list_elem *elem, const void *data) {
+int list_ins_next(struct list_elem *elem, void *data) {
     struct list_elem *elem_new;
 
     elem_new = malloc(sizeof(struct list_elem));
     if (elem_new == NULL)
         return -1;
     elem_new->next = elem->next;
+    elem->data = data;
     elem->next = elem_new;
 
     return 0;
@@ -69,7 +71,7 @@ int list_rem_next(struct list_elem *elem, void **data) {
     return 0;
 }
 
-int list_size(struct list *list) {
+int list_size(const struct list *list) {
     struct list_elem *elem;
     int count = 0;
 
@@ -79,7 +81,7 @@ int list_size(struct list *list) {
     return count;
 }
 
-struct list_elem* list_tail(struct list *list) {
+struct list_elem* list_tail(const struct list *list){
     struct list_elem *elem;
 
     if (list->head == NULL)

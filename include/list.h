@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+// -----------------------------------------------------------------------------
+
 /// @file
 /// @author  John Anthony <john@jo.hnanthony.com>
 /// @version 0.1
@@ -46,13 +48,17 @@ struct list {
     struct list_elem *head;
 };
 
+// -----------------------------------------------------------------------------
+
 /// Initialises a linked list. this operation must be called for a linked list
-/// before the list before the list can be used with any other operation.
+/// before the list before the list can be used with any other
+/// operation. Obligation to free is passed out to the caller through the list
+/// parameter.
 ///
 /// COMPLEXITY: O(1)
 ///
 /// @param list The list to initialise
-void list_init(struct list *list);
+void list_init(/*@out@*/ struct list *list);
 
 /// Destroys a linked list. No other operations are permitted after destroying
 /// unless list_init is called again. This function removes all elements from
@@ -73,7 +79,7 @@ void list_destroy(struct list *list, void (*destroy)(void *data));
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int list_ins_head(struct list *list, const void *data);
+int list_ins_head(struct list *list, void *data);
 
 /// Inserts an element to a list. If elem is NULL it is inserted at the head of
 /// the list.
@@ -84,7 +90,7 @@ int list_ins_head(struct list *list, const void *data);
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int list_ins_next(struct list_elem *elem, const void *data);
+int list_ins_next(struct list_elem *elem, void *data);
 
 /// Removes an element from the head of a list. Upon return data contains the
 /// memory pointed to by the element. It is the caller's responsibility to
@@ -118,7 +124,7 @@ int list_rem_next(struct list_elem *elem, void **data);
 /// @param list List whose elements to count
 ///
 /// @return Number of elements in list.
-int list_size(struct list *list);
+int list_size(const struct list *list);
 
 /// Returns the last element of a list. Returns NULL if the list is empty. This
 /// is highly inefficient and you should probably rethink what you're doing.
@@ -128,6 +134,20 @@ int list_size(struct list *list);
 /// @param list The list to return the tail element of
 ///
 /// @return The last element of the list or NULL for an empty list
-struct list_elem* list_tail(struct list *list);
+/*@null@*/ /*@observer@*/
+struct list_elem* list_tail(const struct list *list);
+
+// -----------------------------------------------------------------------------
+
+/// A macro for generating for loops - loop over all the elements of a list
+///
+/// COMPLEXITY: O(n)
+///
+/// @param list The list to iterate over
+/// @param name The name used for the iterator
+#define list_for_each(list, name) \
+    for (struct list_elem * name = (list)->head; name; name = name->next)
+
+// -----------------------------------------------------------------------------
 
 #endif // LIST_H
