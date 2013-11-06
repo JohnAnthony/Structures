@@ -50,10 +50,9 @@ struct list {
 
 // -----------------------------------------------------------------------------
 
-/// Initialises a linked list. this operation must be called for a linked list
-/// before the list before the list can be used with any other
-/// operation. Obligation to free is passed out to the caller through the list
-/// parameter.
+/// Initialises a linked list. This operation must be called for a linked list
+/// before the list can be used with any other operation. Obligation to free is
+/// passed out to the caller through the list parameter.
 ///
 /// COMPLEXITY: O(1)
 ///
@@ -62,8 +61,8 @@ void list_init(/*@out@*/ struct list *list);
 
 /// Destroys a linked list. No other operations are permitted after destroying
 /// unless list_init is called again. This function removes all elements from
-/// the list and calles the list's destroy function on them unless destroy is
-/// set to NULL.
+/// the list and calls the given destroy function on them unless destroy is set
+/// to NULL.
 ///
 /// COMPLEXITY: O(n)
 ///
@@ -81,8 +80,7 @@ void list_destroy(struct list *list, void (*destroy)(void *data));
 /// @return 0 for success, -1 for failure
 int list_ins_head(struct list *list, void *data);
 
-/// Inserts an element to a list. If elem is NULL it is inserted at the head of
-/// the list.
+/// Inserts an element to a list after the given element.
 ///
 /// COMPLEXITY: O(1)
 ///
@@ -92,29 +90,29 @@ int list_ins_head(struct list *list, void *data);
 /// @return 0 for success, -1 for failure
 int list_ins_next(struct list_elem *elem, void *data);
 
-/// Removes an element from the head of a list. Upon return data contains the
-/// memory pointed to by the element. It is the caller's responsibility to
-/// manage the storage associated with the data.
+/// Removes an element from the head of a list. It is the user's responsibility
+/// to free the element's data. If destroy is non-NULL it will be called on the
+/// element's data to free it.
 ///
 /// COMPLEXITY: O(1)
 ///
 /// @param list The llist to remove from the head of
-/// @param data Will be set to point to the data of the element that was removed
+/// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
-int list_rem_head(struct list *list, void **data);
+int list_rem_head(struct list *list, void (*destroy)(void *data));
 
-/// Removes an element from a list. Upon return data contains the memory pointed
-/// to by the element. It is the caller's responsibility to manage the storage
-/// associated with the data.
+/// Removes a list element from the list position after the given one.  It is
+/// the user's responsibility to free the element's data. If destroy is non-NULL
+/// it will be called on the element's data to free it.
 ///
 /// COMPLEXITY: O(1)
 ///
 /// @param elem The element to remove after
-/// @param data Will be set to point to the data of the element that was removed
+/// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
-int list_rem_next(struct list_elem *elem, void **data);
+int list_rem_next(struct list_elem *elem, void (*destroy)(void *data));
 
 /// Counts the elements in a list. This is highly inefficient and probably not a
 /// good use of a linked list
@@ -134,7 +132,7 @@ int list_size(const struct list *list);
 /// @param list The list to return the tail element of
 ///
 /// @return The last element of the list or NULL for an empty list
-/*@null@*/ /*@observer@*/
+/*@null@*/
 struct list_elem* list_tail(const struct list *list);
 
 // -----------------------------------------------------------------------------

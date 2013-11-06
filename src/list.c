@@ -45,7 +45,7 @@ int list_ins_next(struct list_elem *elem, void *data) {
     return 0;
 }
 
-int list_rem_head(struct list *list, void **data) {
+int list_rem_head(struct list *list, void (*destroy)(void *data)) {
     struct list_elem *elem;
 
     elem = list->head;
@@ -53,12 +53,13 @@ int list_rem_head(struct list *list, void **data) {
         return -1;
 
     list->head = elem->next;
-    *data = elem->data;
+    if (destroy)
+        destroy(elem->data);
     free(elem);
     return 0;
 }
 
-int list_rem_next(struct list_elem *elem, void **data) {
+int list_rem_next(struct list_elem *elem, void (*destroy)(void *data)) {
     struct list_elem *target;
 
     target = elem->next;
@@ -66,7 +67,8 @@ int list_rem_next(struct list_elem *elem, void **data) {
         return -1;
 
     elem->next = target->next;
-    *data = target->data;
+    if (destroy)
+        destroy(elem->data);
     free(target);
     return 0;
 }
