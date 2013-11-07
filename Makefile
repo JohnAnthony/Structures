@@ -7,7 +7,7 @@ CC = cc
 all: test $(ALL_O)
 
 test: test.c $(ALL_O)
-	$(CC) -o $@ $(CFLAGS) $< $(ALL_O)
+	$(CC) -o $@ $(CFLAGS) $< $(ALL_O) -D_BSD_SOURCE
 
 %.o: $(SDIR)/%.c $(IDIR)/%.h
 	$(CC) -o $@ -c $(CFLAGS) $<
