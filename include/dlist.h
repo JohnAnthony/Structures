@@ -210,6 +210,30 @@ struct dlist_elem* dlist_tail(const struct dlist *dlist);
          name;                                     \
          name = temp, temp = temp->next)
 
+/// A macro for looping over a list from a given element
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+#define dlist_for_each_elem_rev(elem, name)                         \
+    for (struct dlist_elem * name = elem; name; name = name->prev)
+
+/// A macro for looping over a list from a given element. Safe against element
+/// destruction.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+/// @param temp Name to use for temporary storage
+#define dlist_for_each_elem_rev_safe(elem, name, temp)  \
+    for (struct dlist_elem                              \
+             * name = elem,                             \
+             * temp = elem->prev;                       \
+         name;                                          \
+         name = temp, temp = temp->prev)
+
 // -----------------------------------------------------------------------------
 
 #endif // DLIST_H

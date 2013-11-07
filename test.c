@@ -1,41 +1,51 @@
+#include "clist.h"
+#include "dlist.h"
 #include "list.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+// -----------------------------------------------------------------------------
+
+bool test_clist(void);
+bool test_dlist(void);
+bool test_list(void);
+
+// -----------------------------------------------------------------------------
+
+int main(void) {
+    test_list();
+    test_dlist();
+    test_clist();
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+
+bool test_clist(void) {
+
+    return true;
+}
+
 bool test_dlist(void) {
-// -----------------------------------------------------------------------------
 // void dlist_init(/*@out@*/ struct dlist *dlist);
-// -----------------------------------------------------------------------------
 // void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int dlist_ins_head(struct dlist *dlist, void *data);
-// -----------------------------------------------------------------------------
 // int dlist_ins_next(struct dlist_elem *elem, void *data);
-// -----------------------------------------------------------------------------
 // int dlist_ins_prev(struct dlist *dlist,
 //                     struct dlist_elem *elem,
 //                     void *data);
-// -----------------------------------------------------------------------------
 // int dlist_rem_head(struct dlist *dlist, void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int dlist_rem(struct dlist *dlist,
 //               struct dlist_elem *elem,
 //               void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int dlist_size(const struct dlist *dlist);
-// -----------------------------------------------------------------------------
 // struct dlist_elem* dlist_tail(const struct dlist *dlist);
-// -----------------------------------------------------------------------------
 // MACRO dlist_for_each(list, name)
-// -----------------------------------------------------------------------------
 // MACRO dlist_for_each_safe(list, name, temp)
-// -----------------------------------------------------------------------------
 // MACRO dlist_for_each_elem(elem, name)
-// -----------------------------------------------------------------------------
 // MACRO dlist_for_each_elem_safe(elem, name, temp)
-// -----------------------------------------------------------------------------
 
     return true;
 }
@@ -46,31 +56,20 @@ bool test_list(void) {
     char *string2;
     char *string3;
 
-// -----------------------------------------------------------------------------
 // void list_init(/*@out@*/ struct list *list);
-// -----------------------------------------------------------------------------
 // void list_destroy(struct list *list, void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int list_ins_head(struct list *list, void *data);
-// -----------------------------------------------------------------------------
 // int list_ins_next(struct list_elem *elem, void *data);
-// -----------------------------------------------------------------------------
 // int list_rem_head(struct list *list, void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int list_rem_next(struct list_elem *elem, void (*destroy)(void *data));
-// -----------------------------------------------------------------------------
 // int list_size(const struct list *list);
-// -----------------------------------------------------------------------------
 // struct list_elem* list_tail(const struct list *list);
-// -----------------------------------------------------------------------------
 // MACRO list_for_each(list, name)
-// -----------------------------------------------------------------------------
 // MACRO list_for_each_safe(list, name, temp)
-// -----------------------------------------------------------------------------
 // MACRO list_for_each_elem(elem, name)
-// -----------------------------------------------------------------------------
 // MACRO list_for_each_elem_safe(elem, name, temp)
-// -----------------------------------------------------------------------------
+// MACRO list_for_each_elem_rev(elem, name)
+// MACRO list_for_each_elem_rev_safe(elem, name, temp)
 
     string1 = strdup("Pushed first");
     string2 = strdup("Pushed second");
@@ -94,8 +93,3 @@ bool test_list(void) {
     return true;
 }
 
-int main(void) {
-    test_dlist();
-    test_list();
-    return 0;
-}
