@@ -1,6 +1,6 @@
 Eliminate splint warnings
-:: src/list.h  :: 8 warnings
-:: src/dlist.h :: 30 warnings
+:: src/list.h  :: 10 warnings
+:: src/dlist.h :: 32 warnings
 :: Total       :: 38 warnings
 
 Add Doxygen to makefile

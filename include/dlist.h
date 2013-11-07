@@ -3,7 +3,7 @@
 
 // -----------------------------------------------------------------------------
 
-/// @file
+/// @file    dlist.h
 /// @author  John Anthony <john@jo.hnanthony.com>
 /// @version 0.1
 ///

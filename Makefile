@@ -1,6 +1,6 @@
 IDIR = include
 SDIR = src
-ALL_O = list.o dlist.o
+ALL_O = list.o dlist.o clist.o
 CFLAGS+= -std=c11 -Wall -pedantic -O2 -ggdb -I$(IDIR)
 CC = cc
 
