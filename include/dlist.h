@@ -167,7 +167,7 @@ struct dlist_elem* dlist_tail(const struct dlist *dlist);
 ///
 /// @param list The list to iterate over
 /// @param name The name used for the iterator
-#define dlist_for_each(list, name) \
+#define dlist_for_each(list, name)                                      \
     for (struct dlist_elem * name = (list)->head; name; name = name->next)
 
 /// A macro for generating for loops - loop over all the elements of a
