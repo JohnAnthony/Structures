@@ -5,7 +5,8 @@ void list_init(/*@out@*/ struct list *list) {
     list->head = NULL;
 }
 
-void list_destroy(struct list *list, void (*destroy)(void *data)) {
+void list_destroy(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data)) {
     struct list_elem *l1;
     struct list_elem *l2;
 
@@ -19,7 +20,8 @@ void list_destroy(struct list *list, void (*destroy)(void *data)) {
     }
 }
 
-int list_ins_head(struct list *list, void *data) {
+int list_ins_head(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void *data) {
     struct list_elem *elem;
 
     elem = malloc(sizeof(struct list_elem));
@@ -32,7 +34,8 @@ int list_ins_head(struct list *list, void *data) {
     return 0;
 }
 
-int list_ins_next(struct list_elem *elem, void *data) {
+int list_ins_next(/*@notnull@*/ struct list_elem *elem,
+                  /*@null@*/ void *data) {
     struct list_elem *elem_new;
 
     elem_new = malloc(sizeof(struct list_elem));
@@ -45,7 +48,8 @@ int list_ins_next(struct list_elem *elem, void *data) {
     return 0;
 }
 
-int list_rem_head(struct list *list, void (*destroy)(void *data)) {
+int list_rem_head(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data)) {
     struct list_elem *elem;
 
     elem = list->head;
@@ -59,7 +63,8 @@ int list_rem_head(struct list *list, void (*destroy)(void *data)) {
     return 0;
 }
 
-int list_rem_next(struct list_elem *elem, void (*destroy)(void *data)) {
+int list_rem_next(/*@notnull@*/ struct list_elem *elem,
+                  /*@null@*/ void (*destroy)(void *data)) {
     struct list_elem *target;
 
     target = elem->next;
@@ -73,7 +78,7 @@ int list_rem_next(struct list_elem *elem, void (*destroy)(void *data)) {
     return 0;
 }
 
-int list_size(const struct list *list) {
+int list_size(/*@notnull@*/ const struct list *list) {
     struct list_elem *elem;
     int count = 0;
 
@@ -83,7 +88,7 @@ int list_size(const struct list *list) {
     return count;
 }
 
-struct list_elem* list_tail(const struct list *list){
+struct list_elem* list_tail(/*@notnull@*/ const struct list *list) {
     struct list_elem *elem;
 
     if (list->head == NULL)

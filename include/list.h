@@ -56,9 +56,10 @@ struct list {
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @param list The list to initialise
+/// @warning Passing an initialised list to this function is undefined
+/// behaviour. Expect a memory leak.
 ///
-/// :: Unsafe :: list is already initialised
+/// @param list The list to initialise
 void list_init(/*@out@*/ struct list *list);
 
 /// Destroys a linked list. No other operations are permitted after destroying
@@ -66,13 +67,16 @@ void list_init(/*@out@*/ struct list *list);
 /// the list and calls the given destroy function on them unless destroy is set
 /// to NULL.
 ///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
 /// COMPLEXITY: O(n)
 ///
 /// @param list The list to destroy
 /// @param destroy The function to use to free all the list element data
 ///
 /// ###
-void list_destroy(struct list *list, void (*destroy)(void *data));
+void list_destroy(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data));
 
 /// Inserts an element into a list at the head.
 ///
@@ -82,7 +86,8 @@ void list_destroy(struct list *list, void (*destroy)(void *data));
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int list_ins_head(struct list *list, void *data);
+int list_ins_head(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void *data);
 
 /// Inserts an element to a list after the given element.
 ///
@@ -92,7 +97,8 @@ int list_ins_head(struct list *list, void *data);
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int list_ins_next(struct list_elem *elem, void *data);
+int list_ins_next(/*@notnull@*/ struct list_elem *elem,
+                  /*@null@*/ void *data);
 
 /// Removes an element from the head of a list. It is the user's responsibility
 /// to free the element's data. If destroy is non-NULL it will be called on the
@@ -104,7 +110,8 @@ int list_ins_next(struct list_elem *elem, void *data);
 /// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
-int list_rem_head(struct list *list, void (*destroy)(void *data));
+int list_rem_head(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data));
 
 /// Removes a list element from the list position after the given one.  It is
 /// the user's responsibility to free the element's data. If destroy is non-NULL
@@ -116,7 +123,8 @@ int list_rem_head(struct list *list, void (*destroy)(void *data));
 /// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
-int list_rem_next(struct list_elem *elem, void (*destroy)(void *data));
+int list_rem_next(/*@notnull@*/ struct list_elem *elem,
+                  /*@null@*/ void (*destroy)(void *data));
 
 /// Counts the elements in a list. This is highly inefficient and probably not a
 /// good use of a linked list
@@ -126,7 +134,7 @@ int list_rem_next(struct list_elem *elem, void (*destroy)(void *data));
 /// @param list List whose elements to count
 ///
 /// @return Number of elements in list.
-int list_size(const struct list *list);
+int list_size(/*@notnull@*/ const struct list *list);
 
 /// Returns the last element of a list. Returns NULL if the list is empty. This
 /// is highly inefficient and you should probably rethink what you're doing.
@@ -137,7 +145,7 @@ int list_size(const struct list *list);
 ///
 /// @return The last element of the list or NULL for an empty list
 /*@null@*/
-struct list_elem* list_tail(const struct list *list);
+struct list_elem* list_tail(/*@notnull@*/ const struct list *list);
 
 // -----------------------------------------------------------------------------
 
