@@ -133,6 +133,7 @@ int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
     return count;
 }
 
+/*@null@*/
 struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
 

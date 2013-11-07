@@ -231,6 +231,7 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param name The label to use for the iterator
 ///
 /// ::  Safe  :: elem is NULL
+/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem(elem, name)                             \
     for (struct dlist_elem * name = elem; name; name = name->next)
 
@@ -244,6 +245,7 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param temp Name to use for temporary storage
 ///
 /// ::  Safe  :: elem is NULL
+/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_safe(elem, name, temp) \
     if (elem != NULL)                              \
         for (struct dlist_elem                     \
@@ -260,6 +262,7 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param name The label to use for the iterator
 ///
 /// ::  Safe  :: elem is NULL
+/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_rev(elem, name)                         \
     for (struct dlist_elem * name = elem; name; name = name->prev)
 
@@ -273,6 +276,7 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param temp Name to use for temporary storage
 ///
 /// ::  Safe  :: elem is NULL
+/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_rev_safe(elem, name, temp)  \
     if (elem != NULL)                                   \
         for (struct dlist_elem                          \
