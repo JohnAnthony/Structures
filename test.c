@@ -11,6 +11,7 @@ bool test_dlist(void) {
 // void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data));
 // -----------------------------------------------------------------------------
 // int dlist_ins_head(struct dlist *dlist, void *data);
+// -----------------------------------------------------------------------------
 // int dlist_ins_next(struct dlist_elem *elem, void *data);
 // -----------------------------------------------------------------------------
 // int dlist_ins_prev(struct dlist *dlist,
@@ -21,7 +22,7 @@ bool test_dlist(void) {
 // -----------------------------------------------------------------------------
 // int dlist_rem(struct dlist *dlist,
 //               struct dlist_elem *elem,
-//                void (*destroy)(void *data));
+//               void (*destroy)(void *data));
 // -----------------------------------------------------------------------------
 // int dlist_size(const struct dlist *dlist);
 // -----------------------------------------------------------------------------
@@ -63,6 +64,12 @@ bool test_list(void) {
 // struct list_elem* list_tail(const struct list *list);
 // -----------------------------------------------------------------------------
 // MACRO list_for_each(list, name)
+// -----------------------------------------------------------------------------
+// MACRO list_for_each_safe(list, name, temp)
+// -----------------------------------------------------------------------------
+// MACRO list_for_each_elem(elem, name)
+// -----------------------------------------------------------------------------
+// MACRO list_for_each_elem_safe(elem, name, temp)
 // -----------------------------------------------------------------------------
 
     string1 = strdup("Pushed first");

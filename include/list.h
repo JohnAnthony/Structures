@@ -179,11 +179,11 @@ struct list_elem* list_tail(const struct list *list);
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
 /// @param temp Name to use for temporary storage
-#define list_for_each_elem_safe(elem, name, temp) \
-    for (struct list_elem                         \
-             * name = elem,                       \
-             * temp = elem->next;                 \
-         name;                                    \
+#define list_for_each_elem_safe(elem, name, temp)              \
+    for (struct list_elem                                      \
+             * name = elem,                                    \
+             * temp = elem->next;                              \
+         name;                                                 \
          name = temp, temp = temp->next)
 
 // -----------------------------------------------------------------------------
