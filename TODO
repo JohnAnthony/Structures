@@ -1,0 +1,4 @@
+Eliminate splint warnings
+:: src/list.h    :: 8 warnings
+:: src/dl_list.h :: 30 warnings
+:: Total         :: 38 warnings
