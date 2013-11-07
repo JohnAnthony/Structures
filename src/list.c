@@ -39,7 +39,7 @@ int list_ins_next(struct list_elem *elem, void *data) {
     if (elem_new == NULL)
         return -1;
     elem_new->next = elem->next;
-    elem->data = data;
+    elem_new->data = data;
     elem->next = elem_new;
 
     return 0;
