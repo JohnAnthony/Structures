@@ -5,7 +5,8 @@ void dlist_init(/*@out@*/ struct dlist *dlist) {
     dlist->head = NULL;
 }
 
-void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data)) {
+void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void (*destroy)(void *data)) {
     struct dlist_elem *l1;
     struct dlist_elem *l2;
 
@@ -33,7 +34,8 @@ void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data)) {
     }
 }
 
-int dlist_ins_head(struct dlist *dlist, void *data) {
+int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void *data) {
     struct dlist_elem *elem;
 
     elem = malloc(sizeof(struct dlist_elem));
@@ -47,7 +49,8 @@ int dlist_ins_head(struct dlist *dlist, void *data) {
     return 0;
 }
 
-int dlist_ins_next(struct dlist_elem *elem, void *data) {
+int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
+                   /*@null@*/ void *data) {
     struct dlist_elem *elem_new;
 
     elem_new = malloc(sizeof(struct dlist_elem));
@@ -63,9 +66,9 @@ int dlist_ins_next(struct dlist_elem *elem, void *data) {
     return 0;
 }
 
-int dlist_ins_prev(struct dlist *dlist,
-                     struct dlist_elem *elem,
-                     void *data) {
+int dlist_ins_prev(/*@null@*/ struct dlist *dlist,
+                   /*@notnull@*/ struct dlist_elem *elem,
+                   /*@null@*/ void *data) {
     struct dlist_elem *elem_new;
 
     elem_new = malloc(sizeof(struct dlist_elem));
@@ -81,7 +84,8 @@ int dlist_ins_prev(struct dlist *dlist,
     return 0;
 }
 
-int dlist_rem_head(struct dlist *dlist, void (*destroy)(void *data)) {
+int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void (*destroy)(void *data)) {
     struct dlist_elem *elem;
 
     elem = dlist->head;
@@ -99,9 +103,9 @@ int dlist_rem_head(struct dlist *dlist, void (*destroy)(void *data)) {
     return 0;
 }
 
-int dlist_rem(struct dlist *dlist,
-                struct dlist_elem *elem,
-                void (*destroy)(void *data)) {
+int dlist_rem(/*@null@*/ struct dlist *dlist,
+              /*@notnull@*/ struct dlist_elem *elem,
+              /*@null@*/ void (*destroy)(void *data)) {
     elem->next->prev = elem->prev;
     elem->prev->next = elem->next;
 
@@ -114,7 +118,7 @@ int dlist_rem(struct dlist *dlist,
     return 0;
 }
 
-int dlist_size(const struct dlist *dlist) {
+int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
     int count = 0;
 
@@ -129,7 +133,7 @@ int dlist_size(const struct dlist *dlist) {
     return count;
 }
 
-struct dlist_elem* dlist_tail(const struct dlist *dlist){
+struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
 
     if (dlist->head == NULL)
