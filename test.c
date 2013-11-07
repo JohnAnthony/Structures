@@ -4,30 +4,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool test_dl_list(void) {
+bool test_dlist(void) {
 // -----------------------------------------------------------------------------
-// void dl_list_init(/*@out@*/ struct dl_list *dl_list);
+// void dlist_init(/*@out@*/ struct dlist *dlist);
 // -----------------------------------------------------------------------------
-// void dl_list_destroy(struct dl_list *dl_list, void (*destroy)(void *data));
+// void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data));
 // -----------------------------------------------------------------------------
-// int dl_list_ins_head(struct dl_list *dl_list, void *data);
-// int dl_list_ins_next(struct dl_list_elem *elem, void *data);
+// int dlist_ins_head(struct dlist *dlist, void *data);
+// int dlist_ins_next(struct dlist_elem *elem, void *data);
 // -----------------------------------------------------------------------------
-// int dl_list_ins_prev(struct dl_list *dl_list,
-//                     struct dl_list_elem *elem,
+// int dlist_ins_prev(struct dlist *dlist,
+//                     struct dlist_elem *elem,
 //                     void *data);
 // -----------------------------------------------------------------------------
-// int dl_list_rem_head(struct dl_list *dl_list, void (*destroy)(void *data));
+// int dlist_rem_head(struct dlist *dlist, void (*destroy)(void *data));
 // -----------------------------------------------------------------------------
-// int dl_list_rem(struct dl_list *dl_list,
-//               struct dl_list_elem *elem,
+// int dlist_rem(struct dlist *dlist,
+//               struct dlist_elem *elem,
 //                void (*destroy)(void *data));
 // -----------------------------------------------------------------------------
-// int dl_list_size(const struct dl_list *dl_list);
+// int dlist_size(const struct dlist *dlist);
 // -----------------------------------------------------------------------------
-// struct dl_list_elem* dl_list_tail(const struct dl_list *dl_list);
+// struct dlist_elem* dlist_tail(const struct dlist *dlist);
 // -----------------------------------------------------------------------------
-// MACRO dl_list_for_each(list, name)
+// MACRO dlist_for_each(list, name)
 // -----------------------------------------------------------------------------
 
     return true;
@@ -82,7 +82,7 @@ bool test_list(void) {
 }
 
 int main(void) {
-    test_dl_list();
+    test_dlist();
     test_list();
     return 0;
 }
