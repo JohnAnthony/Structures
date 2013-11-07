@@ -57,6 +57,8 @@ struct list {
 /// COMPLEXITY: O(1)
 ///
 /// @param list The list to initialise
+///
+/// :: Unsafe :: list is already initialised
 void list_init(/*@out@*/ struct list *list);
 
 /// Destroys a linked list. No other operations are permitted after destroying
@@ -68,6 +70,8 @@ void list_init(/*@out@*/ struct list *list);
 ///
 /// @param list The list to destroy
 /// @param destroy The function to use to free all the list element data
+///
+/// ###
 void list_destroy(struct list *list, void (*destroy)(void *data));
 
 /// Inserts an element into a list at the head.

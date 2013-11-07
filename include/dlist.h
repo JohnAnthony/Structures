@@ -27,7 +27,8 @@
 /// @section DESCRIPTION
 ///
 /// A simple, generic doubly linked list implementation using a generic data
-/// structure.
+/// structure. All functions are safe to use with empty lists except dlist_init
+/// for obvious reasons.
 
 // -----------------------------------------------------------------------------
 
@@ -58,9 +59,10 @@ struct dlist {
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @param dlist The doubly linked list to initialise
+/// @warning Passing an initialised list to this function is undefined
+/// behaviour. Expect a memory leak.
 ///
-/// :: Unsafe :: dlist is already initialised
+/// @param dlist The doubly linked list to initialise
 void dlist_init(/*@out@*/ /*@notnull@*/ struct dlist *dlist);
 
 /// Destroys a doubly linked list. No other operations are permitted after
@@ -68,13 +70,12 @@ void dlist_init(/*@out@*/ /*@notnull@*/ struct dlist *dlist);
 /// elements from the list and calls the given destroy function on them unless
 /// destroy is set to NULL.
 ///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
 /// COMPLEXITY: O(n)
 ///
 /// @param dlist The list to destroy
 /// @param destroy The function to use to free all the list element data
-///
-/// ::  Safe  :: dlist is an empty list
-/// :: Unsafe :: dlist is not initialised
 void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
 
@@ -84,8 +85,6 @@ void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
 ///
 /// @param dlist The list to insert at the head of
 /// @param data The data the newly created element should point to
-///
-/// :: Unsafe :: dlist not initialised
 ///
 /// @return 0 for success, -1 for failure
 int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
@@ -98,16 +97,13 @@ int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
 /// @param elem The element to insert after
 /// @param data The data the newly created element should point to
 ///
-/// ::  Safe  :: elem is the last element in a list
-///
 /// @return 0 for success, -1 for failure
 int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data);
 
-/// Inserts an element to a doubly-linked list before the given element. If
-/// dlist is provided and elem is the head element, the list's head is reset
-/// appropriately. You may pass NULL as dlist but you are responsible for
-/// moving your list head if appropriate.
+/// Inserts an element to a doubly-linked list before the given element. dlist
+/// is required so that when elem is the list's head element, the list's head is
+/// reset appropriately.
 ///
 /// COMPLEXITY: O(1)
 ///
@@ -115,11 +111,8 @@ int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
 /// @param elem The element to insert before
 /// @param data The data the newly created element should point to
 ///
-/// ::  Safe  :: elem is the first element in a list is that list is dlist
-/// :: Unsafe :: dlist not initialised
-///
 /// @return 0 for success, -1 for failure
-int dlist_ins_prev(/*@null@*/ struct dlist *dlist,
+int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
                    /*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data);
 
@@ -128,35 +121,30 @@ int dlist_ins_prev(/*@null@*/ struct dlist *dlist,
 ///
 /// COMPLEXITY: O(1)
 ///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
 /// @param dlist The dlist to remove from the head of
 /// @param destroy Callback function for freeing the element's data
-///
-/// ::  Safe  :: dlist is an empty list
-/// :: Unsafe :: dlist not initialised
 ///
 /// @return 0 on success, -1 on failure
 int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
 
-/// Removes an element from a doubly-linked list. Provides a mechanism for
-/// safely handling removing the first element of a list through dlist. You
-/// may pass NULL as dlist but you are then responsible for ensuring that you
-/// don't accidentally remove the head element of a list, thereby invalidating
-/// the list.
+/// Removes an element from a doubly-linked list. dlist is required so that
+/// dlist->head can be changed if we are removing the head of the list. The
+/// destroyed element will have destroy() called upon elem->data to free it is
+/// destroy is non-NULL.
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @param dlist List to remove from. Used to prevent accidental removal of a
-/// head element
-/// @param elem The element to remove after
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param dlist Parent list to remove from
+/// @param elem The element to remove
 /// @param destroy Callback function for freeing the element's data
 ///
-/// ::  Safe  :: elem is the last element in a list
-/// :: Unsafe :: elem is the first element in a list other than dlist
-/// :: Unsafe :: dlist is non-NULL and not initialised and elem is dlist->head
-///
 /// @return 0 on success, -1 on failure
-int dlist_rem(/*@null@*/ struct dlist *dlist,
+int dlist_rem(/*@notnull@*/ struct dlist *dlist,
               /*@notnull@*/ struct dlist_elem *elem,
               /*@null@*/ void (*destroy)(void *data));
 
@@ -166,9 +154,6 @@ int dlist_rem(/*@null@*/ struct dlist *dlist,
 /// COMPLEXITY: O(n)
 ///
 /// @param dlist Doubly-linked list whose elements to count
-///
-/// :;  Safe  :: dlist is an empty list
-/// :: Unsafe :: dlist is not initialised
 ///
 /// @return Number of elements in list.
 int dlist_size(/*@notnull@*/ const struct dlist *dlist);
@@ -181,10 +166,7 @@ int dlist_size(/*@notnull@*/ const struct dlist *dlist);
 ///
 /// @param dlist The doubly-linked list to return the tail element of
 ///
-/// ::  Safe  :: dlist is an empty list
-/// :: Unsafe :: dlist is not initialised
-///
-/// @return The last element of the list or NULL for an empty list
+// @return The last element of the list or NULL for an empty list
 /*@null@*/
 struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 
@@ -196,10 +178,6 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 ///
 /// @param list The list to iterate over
 /// @param name The name used for the iterator
-///
-/// ::  Safe  :: list is an empty list
-/// :: Unsafe :: list is NULL
-/// :: Unsafe :: list is not initialised
 #define dlist_for_each(list, name)                                      \
     for (struct dlist_elem * name = (list)->head; name; name = name->next)
 
@@ -211,10 +189,6 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param list The list to iterate over
 /// @param name The name used for the iterator
 /// @param temp Name to use for temporary storage
-///
-/// ::  Safe  :: list is an empty list
-/// :: Unsafe :: list is NULL
-/// :: Unsafe :: list is not initialised
 #define dlist_for_each_safe(list, name, temp)                \
     if ((list)->head)                                        \
         for (struct dlist_elem                               \
@@ -229,9 +203,6 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 ///
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
-///
-/// ::  Safe  :: elem is NULL
-/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem(elem, name)                             \
     for (struct dlist_elem * name = elem; name; name = name->next)
 
@@ -243,16 +214,12 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
 /// @param temp Name to use for temporary storage
-///
-/// ::  Safe  :: elem is NULL
-/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_safe(elem, name, temp) \
-    if (elem != NULL)                              \
-        for (struct dlist_elem                     \
-                 * name = elem,                    \
-                 * temp = elem->next;              \
-             name;                                 \
-             name = temp, temp = temp->next)
+    for (struct dlist_elem                         \
+             * name = elem,                        \
+             * temp = elem->next;                  \
+         name;                                     \
+         name = temp, temp = temp->next)
 
 /// A macro for looping over a list from a given element
 ///
@@ -260,9 +227,6 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 ///
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
-///
-/// ::  Safe  :: elem is NULL
-/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_rev(elem, name)                         \
     for (struct dlist_elem * name = elem; name; name = name->prev)
 
@@ -274,16 +238,12 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
 /// @param temp Name to use for temporary storage
-///
-/// ::  Safe  :: elem is NULL
-/// ::  Safe  :: elem is at any position within a list
 #define dlist_for_each_elem_rev_safe(elem, name, temp)  \
-    if (elem != NULL)                                   \
-        for (struct dlist_elem                          \
-                 * name = elem,                         \
-                 * temp = elem->prev;                   \
-             name;                                      \
-             name = temp, temp = temp->prev)
+    for (struct dlist_elem                              \
+             * name = elem,                             \
+             * temp = elem->prev;                       \
+         name;                                          \
+         name = temp, temp = temp->prev)
 
 // -----------------------------------------------------------------------------
 
