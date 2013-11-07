@@ -170,6 +170,46 @@ struct dlist_elem* dlist_tail(const struct dlist *dlist);
 #define dlist_for_each(list, name) \
     for (struct dlist_elem * name = (list)->head; name; name = name->next)
 
+/// A macro for generating for loops - loop over all the elements of a
+/// list. this safe version allows for removal of the current element
+///
+/// COMPELXITY: O(n)
+///
+/// @param list The list to iterate over
+/// @param name The name used for the iterator
+/// @param temp Name to use for temporary storage
+#define dlist_for_each_safe(list, name, temp)    \
+    if ((list)->head)                            \
+        for (struct dlist_elem                   \
+                 * name = (list)->head,          \
+                 * temp = (list)->head->next;    \
+             name;                               \
+             name = temp, temp = temp->next)
+
+/// A macro for looping over a list from a given element
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+#define dlist_for_each_elem(elem, name)                             \
+    for (struct dlist_elem * name = elem; name; name = name->next)
+
+/// A macro for looping over a list from a given element. Safe against element
+/// destruction.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+/// @param temp Name to use for temporary storage
+#define dlist_for_each_elem_safe(elem, name, temp) \
+    for (struct dlist_elem                         \
+             * name = elem,                        \
+             * temp = elem->next;                  \
+         name;                                     \
+         name = temp, temp = temp->next)
+
 // -----------------------------------------------------------------------------
 
 #endif // DLIST_H

@@ -186,7 +186,6 @@ struct list_elem* list_tail(const struct list *list);
          name;                                    \
          name = temp, temp = temp->next)
 
-
 // -----------------------------------------------------------------------------
 
 #endif // LIST_H
