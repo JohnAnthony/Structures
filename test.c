@@ -30,6 +30,7 @@ bool test_clist(void) {
 
 bool test_dlist(void) {
 // void dlist_init(/*@out@*/ struct dlist *dlist);
+// :: Unsafe :: dlist is already initialised
 // void dlist_destroy(struct dlist *dlist, void (*destroy)(void *data));
 // int dlist_ins_head(struct dlist *dlist, void *data);
 // int dlist_ins_next(struct dlist_elem *elem, void *data);
