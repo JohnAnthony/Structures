@@ -4,3 +4,25 @@ Eliminate splint warnings
 :: Total       :: 38 warnings
 
 Add Doxygen to makefile
+
+Add splint tests to makefile
+
+Write a README
+
+Unit tests (test.c) for
+:: src/list.h
+:: src/dlist.h
+
+Add data structures
+:: clist (circular lists)
+:: stack
+:: queue
+:: set
+:: hasht (hash table)
+:: chasht (chained hash table)
+:: oahasht (open-addressed hash table)
+:: btree (binary tree)
+:: bstree (binary search tree)
+:: heap
+:: pqueue (priority queue)
+:: graph
