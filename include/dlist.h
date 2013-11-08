@@ -206,7 +206,7 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
 ///
 /// @warning clists do this operation in O(1). Consider using a clist
 ///
-/// @param list The llist to remove from the head of
+/// @param list The list to remove from the head of
 /// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
@@ -239,7 +239,7 @@ int dlist_size(/*@notnull@*/ const struct dlist *dlist);
 /// A macro for generating for loops - loop over all the elements of a
 /// dlist. This safe version allows for removal of the current element
 ///
-/// COMPELXITY: O(n)
+/// COMPLEXITY: O(n)
 ///
 /// @param dlist The dlist to iterate over
 /// @param name The name used for the iterator

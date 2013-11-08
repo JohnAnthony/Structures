@@ -154,7 +154,7 @@ int list_ins_tail(/*@notnull@*/ struct list *list,
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @param list The llist to remove from the head of
+/// @param list The list to remove from the head of
 /// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
@@ -214,7 +214,7 @@ int list_size(/*@notnull@*/ const struct list *list);
 /// A macro for generating for loops - loop over all the elements of a
 /// list. this safe version allows for removal of the current element
 ///
-/// COMPELXITY: O(n)
+/// COMPLEXITY: O(n)
 ///
 /// @param list The list to iterate over
 /// @param name The name used for the iterator

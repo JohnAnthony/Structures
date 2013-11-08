@@ -45,7 +45,7 @@ struct clist_elem {
     void *data;
 };
 
-/// A generic circular llinked list struct
+/// A generic circular linked list struct
 ///
 /// This structure must be initialised with clist_init() before use. When done
 /// with, use list_destroy. Note that this differs by not providing a
@@ -61,13 +61,13 @@ struct clist {
 // -----------------------------------------------------------------------------
 
 /// Initialises a circularly linked list. This operation must be called on a
-/// circularly linekd list before the clist can be used with any other
+/// circularly linked list before the clist can be used with any other
 /// operation. Obligation to free is passed out to the caller through the list
 /// parameter.
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @warning Passing an initialised clist to this funciton is undefined
+/// @warning Passing an initialised clist to this function is undefined
 /// behaviour. Expect a memory leak.
 ///
 /// @param clist The circular linked list to initialise
@@ -82,7 +82,7 @@ void clist_init(/*@out@*/ struct clist *clist);
 ///
 /// @warning Passing NULL as destroy may leave you with leaky memory
 ///
-/// @param cllist The list to destroy
+/// @param clist The list to destroy
 /// @param destroy The function to use to free all element data.
 void clist_destroy(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data));
@@ -210,7 +210,7 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 /// A macro for generating for loops - loop over all the elements of a
 /// clist. This safe version allows for removal of the current element
 ///
-/// COMPELXITY: O(n)
+/// COMPLEXITY: O(n)
 ///
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
