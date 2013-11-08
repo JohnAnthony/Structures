@@ -114,10 +114,6 @@ struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
 int clist_ins_head(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data);
 
-// ###
-int clist_ins_tail(/*@notnull@*/ struct clist *clist,
-                   /*@null@*/ void *data);
-
 /// Inserts an element to a circularly linked list after the given element.
 ///
 /// COMPLEXITY: O(1)
@@ -143,6 +139,10 @@ int clist_ins_next(/*@notnull@*/ struct clist *clist,
 /// @return 0 for success, -1 for failure
 int clist_ins_prev(/*@notnull@*/ struct clist *clist,
                    /*@notnull@*/ struct clist_elem *elem,
+                   /*@null@*/ void *data);
+
+// ###
+int clist_ins_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data);
 
 /// Removes an element from the head of a circularly-linked list. If destroy is

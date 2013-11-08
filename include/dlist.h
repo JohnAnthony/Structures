@@ -127,10 +127,6 @@ struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist);
 int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void *data);
 
-// ###
-int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
-                   /*@null@*/ void *data);
-
 /// Inserts an element to a doubly-linked list after the given element.
 ///
 /// COMPLEXITY: O(1)
@@ -157,6 +153,28 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
                    /*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data);
 
+// ###
+int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void *data);
+
+/// Removes an element from a doubly-linked list. dlist is required so that
+/// dlist->head can be changed if we are removing the head of the dlist. The
+/// destroyed element will have destroy() called upon elem->data to free it if
+/// destroy is non-NULL.
+///
+/// COMPLEXITY: O(1)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param dlist Parent dlist to remove from
+/// @param elem The element to remove
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
+int dlist_rem_elem(/*@notnull@*/ struct dlist *dlist,
+                   /*@notnull@*/ struct dlist_elem *elem,
+                   /*@null@*/ void (*destroy)(void *data));
+
 /// Removes an element from the head of a doubly-linked list. If destroy is
 /// non-NULL it will be used to free the element's data.
 ///
@@ -174,24 +192,6 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
 // ###
 int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
-
-/// Removes an element from a doubly-linked list. dlist is required so that
-/// dlist->head can be changed if we are removing the head of the dlist. The
-/// destroyed element will have destroy() called upon elem->data to free it if
-/// destroy is non-NULL.
-///
-/// COMPLEXITY: O(1)
-///
-/// @warning Passing NULL as destroy may leave you with leaky memory
-///
-/// @param dlist Parent dlist to remove from
-/// @param elem The element to remove
-/// @param destroy Callback function for freeing the element's data
-///
-/// @return 0 on success, -1 on failure
-int dlist_rem(/*@notnull@*/ struct dlist *dlist,
-              /*@notnull@*/ struct dlist_elem *elem,
-              /*@null@*/ void (*destroy)(void *data));
 
 /// Counts the elements in a dlist. This is highly inefficient and probably not
 /// a good use of a linked list.
