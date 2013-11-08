@@ -98,7 +98,7 @@ void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
 ///
 // @return The first element of the dlist or NULL for an empty dlist
 /*@null@*/
-struct dlist_elem* dlist_head(/*@notnull@*/ const struct dlist *dlist);
+struct dlist_elem* dlist_get_head(/*@notnull@*/ const struct dlist *dlist);
 
 /// Returns the last element of a doubly-linked list. Returns NULL if the dlist
 /// is empty. This is highly inefficient and you should probably rethink what
@@ -110,7 +110,7 @@ struct dlist_elem* dlist_head(/*@notnull@*/ const struct dlist *dlist);
 ///
 // @return The last element of the dlist or NULL for an empty dlist
 /*@null@*/
-struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
+struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist);
 
 // -----------------------------------------------------------------------------
 //                                Manipulation

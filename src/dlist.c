@@ -1,6 +1,10 @@
 #include "dlist.h"
 #include <stdlib.h>
 
+// -----------------------------------------------------------------------------
+//                                 Management
+// -----------------------------------------------------------------------------
+
 void dlist_init(/*@out@*/ struct dlist *dlist) {
     dlist->head = NULL;
 }
@@ -12,7 +16,7 @@ void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
 
     if (dlist->head == NULL)
         return;
-    
+
     l1 = dlist->head;
     while (l1) {
         if (destroy != NULL)
@@ -22,6 +26,26 @@ void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
         l1 = l2;
     }
 }
+// -----------------------------------------------------------------------------
+//                                 Accessors
+// -----------------------------------------------------------------------------
+
+/*@null@*/
+struct dlist_elem* dlist_get_head(/*@notnull@*/ const struct dlist *dlist) {
+    return dlist->head;
+}
+
+/*@null@*/
+struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist) {
+    struct dlist_elem *elem;
+
+    for (elem = dlist->head; elem->next; elem = elem->next);
+    return elem;
+}
+
+// -----------------------------------------------------------------------------
+//                                Manipulation
+// -----------------------------------------------------------------------------
 
 int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void *data) {
@@ -34,7 +58,7 @@ int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
     elem->prev = NULL;
     elem->data = data;
     dlist->head = elem;
-    
+
     return 0;
 }
 
@@ -115,15 +139,7 @@ int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
     int count = 0;
 
-    for (elem = dlist->head; elem; elem = elem->next)         // Forwards
+    for (elem = dlist->head; elem; elem = elem->next)
         count++;
     return count;
-}
-
-/*@null@*/
-struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist) {
-    struct dlist_elem *elem;
-
-    for (elem = dlist->head; elem->next; elem = elem->next);
-    return elem;
 }

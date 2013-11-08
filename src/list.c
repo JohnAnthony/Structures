@@ -28,10 +28,12 @@ void list_destroy(/*@notnull@*/ struct list *list,
 //                                 Accessors
 // -----------------------------------------------------------------------------
 
+/*@null@*/
 struct list_elem* list_get_head(/*@notnull@*/ const struct list *list) {
     return list->head;
 }
 
+/*@null@*/
 struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list) {
     struct list_elem *elem;
 
