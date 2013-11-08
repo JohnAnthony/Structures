@@ -2,6 +2,8 @@
 #define LIST_H
 
 // -----------------------------------------------------------------------------
+//                                    Info
+// -----------------------------------------------------------------------------
 
 /// @file    list.h
 /// @author  John Anthony <john@jo.hnanthony.com>
@@ -30,6 +32,8 @@
 /// structure.
 
 // -----------------------------------------------------------------------------
+//                                 Structures
+// -----------------------------------------------------------------------------
 
 /// Individual elements within a linked list
 ///
@@ -48,6 +52,8 @@ struct list {
     struct list_elem *head;
 };
 
+// -----------------------------------------------------------------------------
+//                                 Management
 // -----------------------------------------------------------------------------
 
 /// Initialises a linked list. This operation must be called for a linked list
@@ -77,6 +83,35 @@ void list_init(/*@out@*/ struct list *list);
 /// ###
 void list_destroy(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data));
+
+// -----------------------------------------------------------------------------
+//                                 Accessors
+// -----------------------------------------------------------------------------
+
+/// Returns the first element of a list. Returns NULL if the list is empty.
+///
+/// COMPLEXITY: O(1)
+///
+/// @param list The list to return the head element of
+///
+/// @return The first element of the list or NULL for an empty list
+/*@null@*/
+struct list_elem* list_get_head(/*@notnull@*/ const struct list *list);
+
+/// Returns the last element of a list. Returns NULL if the list is empty. This
+/// is highly inefficient and you should probably rethink what you're doing.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param list The list to return the tail element of
+///
+/// @return The last element of the list or NULL for an empty list
+/*@null@*/
+struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list);
+
+// -----------------------------------------------------------------------------
+//                                Manipulation
+// -----------------------------------------------------------------------------
 
 /// Inserts an element into a list at the head.
 ///
@@ -136,17 +171,8 @@ int list_rem_next(/*@notnull@*/ struct list_elem *elem,
 /// @return Number of elements in list.
 int list_size(/*@notnull@*/ const struct list *list);
 
-/// Returns the last element of a list. Returns NULL if the list is empty. This
-/// is highly inefficient and you should probably rethink what you're doing.
-///
-/// COMPLEXITY: O(n)
-///
-/// @param list The list to return the tail element of
-///
-/// @return The last element of the list or NULL for an empty list
-/*@null@*/
-struct list_elem* list_tail(/*@notnull@*/ const struct list *list);
-
+// -----------------------------------------------------------------------------
+//                               Looping Macros
 // -----------------------------------------------------------------------------
 
 /// A macro for generating for loops - loop over all the elements of a list
@@ -196,6 +222,8 @@ struct list_elem* list_tail(/*@notnull@*/ const struct list *list);
          name;                                                        \
          name = __temp_elem, __temp_elem = __temp_elem->next)
 
+// -----------------------------------------------------------------------------
+//                                    End
 // -----------------------------------------------------------------------------
 
 #endif // LIST_H

@@ -1,6 +1,10 @@
 #include "list.h"
 #include <stdlib.h>
 
+// -----------------------------------------------------------------------------
+//                                 Management
+// -----------------------------------------------------------------------------
+
 void list_init(/*@out@*/ struct list *list) {
     list->head = NULL;
 }
@@ -20,6 +24,28 @@ void list_destroy(/*@notnull@*/ struct list *list,
     }
 }
 
+// -----------------------------------------------------------------------------
+//                                 Accessors
+// -----------------------------------------------------------------------------
+
+struct list_elem* list_get_head(/*@notnull@*/ const struct list *list) {
+    return list->head;
+}
+
+struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list) {
+    struct list_elem *elem;
+
+    if (list->head == NULL)
+        return NULL;
+
+    for (elem = list->head; elem->next; elem = elem->next);
+    return elem;
+}
+
+// -----------------------------------------------------------------------------
+//                                Manipulation
+// -----------------------------------------------------------------------------
+
 int list_ins_head(/*@notnull@*/ struct list *list,
                   /*@null@*/ void *data) {
     struct list_elem *elem;
@@ -30,7 +56,7 @@ int list_ins_head(/*@notnull@*/ struct list *list,
     elem->next = list->head;
     elem->data = data;
     list->head = elem;
-    
+
     return 0;
 }
 
@@ -86,14 +112,4 @@ int list_size(/*@notnull@*/ const struct list *list) {
         count++;
 
     return count;
-}
-
-struct list_elem* list_tail(/*@notnull@*/ const struct list *list) {
-    struct list_elem *elem;
-
-    if (list->head == NULL)
-        return NULL;
-
-    for (elem = list->head; elem->next; elem = elem->next);
-    return elem;
 }

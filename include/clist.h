@@ -43,12 +43,11 @@ struct clist_elem {
 
 /// A generic circular llinked list struct
 ///
-/// When first initialised and when empty, head is NULL. This structure must be
-/// initialised with clist_init() before use. When done with, use
-/// list_destroy. Not that this differs by not providing a transparent data
-/// structure -- to access the head (or tail) element you msut use a getter
-/// function. The "link" member of this struct is an empty list element used for
-/// handle termination when iterating correctly.
+/// This structure must be initialised with clist_init() before use. When done
+/// with, use list_destroy. Note that this differs by not providing a
+/// transparent data structure -- to access the head (or tail) element you must
+/// use a getter function. The "link" member of this struct is an empty list
+/// element used for handle termination when iterating correctly.
 struct clist {
     struct clist_elem *link;
 };
