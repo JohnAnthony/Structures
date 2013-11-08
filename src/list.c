@@ -62,6 +62,10 @@ int list_ins_head(/*@notnull@*/ struct list *list,
     return 0;
 }
 
+
+// ### int list_ins_tail(/*@notnull@*/ struct list *list,
+//                  /*@null@*/ void *data);
+
 int list_ins_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void *data) {
     struct list_elem *elem_new;
@@ -90,6 +94,9 @@ int list_rem_head(/*@notnull@*/ struct list *list,
     free(elem);
     return 0;
 }
+
+// ### int list_rem_tail(/*@notnull@*/ struct list *list,
+//                  /*@null@*/ void (*destroy)(void *data));
 
 int list_rem_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void (*destroy)(void *data)) {

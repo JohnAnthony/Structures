@@ -62,6 +62,9 @@ int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
     return 0;
 }
 
+// ### int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
+//                   /*@null@*/ void *data);
+
 int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data) {
     struct dlist_elem *elem_new;
@@ -117,6 +120,9 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
     free(elem);
     return 0;
 }
+
+// ###  int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
+//                   /*@null@*/ void (*destroy)(void *data));
 
 int dlist_rem(/*@notnull@*/ struct dlist *dlist,
               /*@notnull@*/ struct dlist_elem *elem,

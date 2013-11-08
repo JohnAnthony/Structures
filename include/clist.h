@@ -92,9 +92,11 @@ void clist_destroy(/*@notnull@*/ struct clist *clist,
 // -----------------------------------------------------------------------------
 
 // ###
+/*@null@*/
 struct list_elem* clist_get_head(/*@notnull@*/ struct clist *clist);
 
 // ###
+/*@null@*/
 struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
 
 // -----------------------------------------------------------------------------
@@ -103,7 +105,7 @@ struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
 
 /// Inserts an element into a circularly linked list at the head.
 ///
-/// COMPLEXITY: O(n)
+/// COMPLEXITY: O(1)
 ///
 /// @param clist The list to insert at the head of
 /// @param data The data the newly created element should point to

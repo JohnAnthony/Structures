@@ -118,13 +118,17 @@ struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist);
 
 /// Inserts an element into a doubly-linked list at the head.
 ///
-/// COMPLEXITY: O(n)
+/// COMPLEXITY: O(1)
 ///
 /// @param dlist The dlist to insert at the head of
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
 int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void *data);
+
+// ###
+int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void *data);
 
 /// Inserts an element to a doubly-linked list after the given element.
@@ -165,6 +169,10 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
 ///
 /// @return 0 on success, -1 on failure
 int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void (*destroy)(void *data));
+
+// ###
+int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
 
 /// Removes an element from a doubly-linked list. dlist is required so that

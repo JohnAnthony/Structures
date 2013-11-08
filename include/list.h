@@ -124,6 +124,10 @@ struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list);
 int list_ins_head(/*@notnull@*/ struct list *list,
                   /*@null@*/ void *data);
 
+// ###
+int list_ins_tail(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void *data);
+
 /// Inserts an element to a list after the given element.
 ///
 /// COMPLEXITY: O(1)
@@ -146,6 +150,10 @@ int list_ins_next(/*@notnull@*/ struct list_elem *elem,
 ///
 /// @return 0 on success, -1 on failure
 int list_rem_head(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data));
+
+// ###
+int list_rem_tail(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data));
 
 /// Removes a list element from the list position after the given one.  It is
