@@ -108,7 +108,7 @@ int list_rem_tail(/*@notnull@*/ struct list *list,
 
     while(elem->next->next != NULL)
         elem = elem->next;
-    return list_rem_next(elem);
+    return list_rem_next(elem, destroy);
 }
 
 int list_rem_next(/*@notnull@*/ struct list_elem *elem,
