@@ -103,18 +103,12 @@ int list_rem_tail(/*@notnull@*/ struct list *list,
     elem = list_get_head(list);
     if (elem == NULL)
         return -1;
-    if (elem->next == NULL) {
-        list->head = elem->next;
-        if (destroy != NULL)
-            destroy(elem->data);
-        free(elem);
-        return 0;
-    }
-    
-    while (elem->next)
+    if (elem->next == NULL)
+        return list_rem_head(list, destroy);
+
+    while(elem->next->next != NULL)
         elem = elem->next;
-    list_rem_next(elem, destroy);
-    return 0;
+    return list_rem_next(elem);
 }
 
 int list_rem_next(/*@notnull@*/ struct list_elem *elem,

@@ -153,7 +153,16 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
                    /*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data);
 
-// ###
+/// Inserts an element at the end of a dlist
+///
+/// COMPLEXITY: O(n)
+///
+/// @warning clists offer O(1) tail insertion. Consider using a clist
+///
+/// @param list The list to insert at the end of
+/// @param data The data the newly created element should point to
+///
+/// @return 0 for success, -1 for failure
 int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void *data);
 
@@ -189,7 +198,18 @@ int dlist_rem_elem(/*@notnull@*/ struct dlist *dlist,
 int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
 
-// ###
+/// Removes an element from the tail of a list. It is the user's responsibility
+/// to free the element's data. If destroy is non-NULL it will be called on the
+/// element's data to free it.
+///
+/// COMPLEXITY: O(n)
+///
+/// @warning clists do this operation in O(1). Consider using a clist
+///
+/// @param list The llist to remove from the head of
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
 int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
 

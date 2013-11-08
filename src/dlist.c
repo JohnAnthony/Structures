@@ -62,8 +62,10 @@ int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
     return 0;
 }
 
-// ### int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
-//                   /*@null@*/ void *data);
+int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void *data) {
+    return dlist_ins_next(dlist_get_tail(dlist), data);
+}
 
 int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data) {
@@ -138,8 +140,10 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
     return 0;
 }
 
-// ###  int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
-//                   /*@null@*/ void (*destroy)(void *data));
+int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void (*destroy)(void *data)) {
+    return dlist_rem_elem(dlist, dlist_get_tail(dlist), destroy);
+}
 
 int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
