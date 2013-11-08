@@ -99,6 +99,8 @@ struct list_elem* list_get_head(/*@notnull@*/ const struct list *list);
 /// Returns the last element of a list. Returns NULL if the list is empty. This
 /// is highly inefficient and you should probably rethink what you're doing.
 ///
+/// @warning clists do this operation in O(1). Consider using a clist
+///
 /// COMPLEXITY: O(n)
 ///
 /// @param list The list to return the tail element of
@@ -113,7 +115,7 @@ struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list);
 
 /// Inserts an element into a list at the head.
 ///
-/// COMPLEXITY: O(n)
+/// COMPLEXITY: O(1)
 ///
 /// @param list The list to insert at the head of
 /// @param data The data the newly created element should point to
@@ -133,7 +135,16 @@ int list_ins_head(/*@notnull@*/ struct list *list,
 int list_ins_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void *data);
 
-// ###
+/// Inserts an element at the end of a list
+///
+/// COMPLEXITY: O(n)
+///
+/// @warning clists offer O(1) tail insertion. Consider using a clist
+///
+/// @param list The list to insert at the end of
+/// @param data The data the newly created element should point to
+///
+/// @return 0 for success, -1 for failure
 int list_ins_tail(/*@notnull@*/ struct list *list,
                   /*@null@*/ void *data);
 
@@ -163,12 +174,22 @@ int list_rem_head(/*@notnull@*/ struct list *list,
 int list_rem_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void (*destroy)(void *data));
 
-// ###
+/// Removes an element from the tail of a list. It is the user's responsibility
+/// to free the element's data. If destroy is non-NULL it will be called on the
+/// element's data to free it.
+///
+/// COMPLEXITY: O(n)
+///
+/// @warning clists do this operation in O(1). Consider using a clist
+///
+/// @param list The llist to remove from the head of
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
 int list_rem_tail(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data));
 
-/// Counts the elements in a list. This is highly inefficient and probably not a
-/// good use of a linked list
+/// Counts the elements in a list.
 ///
 /// COMPLEXITY: O(n)
 ///
