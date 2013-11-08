@@ -50,6 +50,7 @@ struct list_elem {
 /// initialised with list_init() before use. When done with, use list_destroy.
 struct list {
     struct list_elem *head;
+    unsigned int size;
 };
 
 // -----------------------------------------------------------------------------
