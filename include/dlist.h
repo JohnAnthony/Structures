@@ -2,6 +2,8 @@
 #define DLIST_H
 
 // -----------------------------------------------------------------------------
+//                                    Info
+// -----------------------------------------------------------------------------
 
 /// @file    dlist.h
 /// @author  John Anthony <john@jo.hnanthony.com>
@@ -31,6 +33,8 @@
 /// for obvious reasons.
 
 // -----------------------------------------------------------------------------
+//                                 Structures
+// -----------------------------------------------------------------------------
 
 /// Individual elements within a doubly linked list
 ///
@@ -51,6 +55,8 @@ struct dlist {
     struct dlist_elem *head;
 };
 
+// -----------------------------------------------------------------------------
+//                                 Management
 // -----------------------------------------------------------------------------
 
 /// Initialises a doubly linked list. This operation must be called for a doubly
@@ -78,6 +84,37 @@ void dlist_init(/*@out@*/ /*@notnull@*/ struct dlist *dlist);
 /// @param destroy The function to use to free all the dlist element data
 void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
+
+// -----------------------------------------------------------------------------
+//                                 Accessors
+// -----------------------------------------------------------------------------
+
+/// Returns the first element of a doubly-linked list. Returns NULL if the dlist
+/// is empty.
+///
+/// COMPLEXITY: O(1)
+///
+/// @param dlist The doubly-linked list to return the head element of
+///
+// @return The first element of the dlist or NULL for an empty dlist
+/*@null@*/
+struct dlist_elem* dlist_head(/*@notnull@*/ const struct dlist *dlist);
+
+/// Returns the last element of a doubly-linked list. Returns NULL if the dlist
+/// is empty. This is highly inefficient and you should probably rethink what
+/// you're doing.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param dlist The doubly-linked list to return the tail element of
+///
+// @return The last element of the dlist or NULL for an empty dlist
+/*@null@*/
+struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
+
+// -----------------------------------------------------------------------------
+//                                Manipulation
+// -----------------------------------------------------------------------------
 
 /// Inserts an element into a doubly-linked list at the head.
 ///
@@ -158,18 +195,8 @@ int dlist_rem(/*@notnull@*/ struct dlist *dlist,
 /// @return Number of elements in dlist.
 int dlist_size(/*@notnull@*/ const struct dlist *dlist);
 
-/// Returns the last element of a doubly-linked list. Returns NULL if the dlist
-/// is empty. This is highly inefficient and you should probably rethink what
-/// you're doing.
-///
-/// COMPLEXITY: O(n)
-///
-/// @param dlist The doubly-linked list to return the tail element of
-///
-// @return The last element of the dlist or NULL for an empty dlist
-/*@null@*/
-struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
-
+// -----------------------------------------------------------------------------
+//                               Looping Macros
 // -----------------------------------------------------------------------------
 
 /// A macro for generating for loops - loop over all the elements of a dlist
@@ -242,6 +269,8 @@ struct dlist_elem* dlist_tail(/*@notnull@*/ const struct dlist *dlist);
          name;                                                 \
          name = __temp_elem, __temp_elem = __temp_elem->prev)
 
+// -----------------------------------------------------------------------------
+//                                    End
 // -----------------------------------------------------------------------------
 
 #endif // DLIST_H
