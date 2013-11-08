@@ -62,9 +62,10 @@ int list_ins_head(/*@notnull@*/ struct list *list,
     return 0;
 }
 
-
-// ### int list_ins_tail(/*@notnull@*/ struct list *list,
-//                  /*@null@*/ void *data);
+int list_ins_tail(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void *data) {
+    return list_ins_next(list_get_tail(list), data);
+}
 
 int list_ins_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void *data) {
@@ -89,14 +90,32 @@ int list_rem_head(/*@notnull@*/ struct list *list,
         return -1;
 
     list->head = elem->next;
-    if (destroy)
+    if (destroy != NULL)
         destroy(elem->data);
     free(elem);
     return 0;
 }
 
-// ### int list_rem_tail(/*@notnull@*/ struct list *list,
-//                  /*@null@*/ void (*destroy)(void *data));
+int list_rem_tail(/*@notnull@*/ struct list *list,
+                  /*@null@*/ void (*destroy)(void *data)){
+    struct list_elem *elem;
+
+    elem = list_get_head(list);
+    if (elem == NULL)
+        return -1;
+    if (elem->next == NULL) {
+        list->head = elem->next;
+        if (destroy != NULL)
+            destroy(elem->data);
+        free(elem);
+        return 0;
+    }
+    
+    while (elem->next)
+        elem = elem->next;
+    list_rem_next(elem, destroy);
+    return 0;
+}
 
 int list_rem_next(/*@notnull@*/ struct list_elem *elem,
                   /*@null@*/ void (*destroy)(void *data)) {

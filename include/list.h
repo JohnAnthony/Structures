@@ -79,8 +79,6 @@ void list_init(/*@out@*/ struct list *list);
 ///
 /// @param list The list to destroy
 /// @param destroy The function to use to free all the list element data
-///
-/// ###
 void list_destroy(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data));
 
