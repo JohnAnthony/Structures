@@ -2,6 +2,8 @@
 #define CLIST_H
 
 // -----------------------------------------------------------------------------
+//                                    Info
+// -----------------------------------------------------------------------------
 
 /// @file    clist.h
 /// @author  John Anthony <john@jo.hnanthony.com>
@@ -30,6 +32,8 @@
 /// structure.
 
 // -----------------------------------------------------------------------------
+//                                 Structures
+// -----------------------------------------------------------------------------
 
 /// Individual elements within a circular linked list
 ///
@@ -52,6 +56,8 @@ struct clist {
     struct clist_elem *link;
 };
 
+// -----------------------------------------------------------------------------
+//                                 Management
 // -----------------------------------------------------------------------------
 
 /// Initialises a circularly linked list. This operation must be called on a
@@ -81,11 +87,19 @@ void clist_init(/*@out@*/ struct clist *clist);
 void clist_destroy(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data));
 
+// -----------------------------------------------------------------------------
+//                                 Accessors
+// -----------------------------------------------------------------------------
+
 // ###
 struct list_elem* clist_get_head(/*@notnull@*/ struct clist *clist);
 
 // ###
 struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
+
+// -----------------------------------------------------------------------------
+//                                Manipulation
+// -----------------------------------------------------------------------------
 
 /// Inserts an element into a circularly linked list at the head.
 ///
@@ -176,6 +190,8 @@ int clist_rem_elem(/*@notnull@*/ struct clist *clist,
 int clist_size(/*@notnull@*/ const struct clist *clist);
 
 // -----------------------------------------------------------------------------
+//                               Looping Macros
+// -----------------------------------------------------------------------------
 
 /// A macro for generating for loops - loop over all the elements of a clist
 ///
@@ -184,7 +200,7 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
 #define clist_for_each(clist, name)                         \
-         
+
 // ###
 
 // ### Got to here!
@@ -248,6 +264,8 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 #define clist_for_each_elem_rev_safe(elem, name, temp)  \
 // ###
 
+// -----------------------------------------------------------------------------
+//                                    End
 // -----------------------------------------------------------------------------
 
 #endif // CLIST_H
