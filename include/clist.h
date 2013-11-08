@@ -44,9 +44,13 @@ struct clist_elem {
 /// A generic circular llinked list struct
 ///
 /// When first initialised and when empty, head is NULL. This structure must be
-/// initialised with clist_init() before use. When done with, use list_destroy.
+/// initialised with clist_init() before use. When done with, use
+/// list_destroy. Not that this differs by not providing a transparent data
+/// structure -- to access the head (or tail) element you msut use a getter
+/// function. The "link" member of this struct is an empty list element used for
+/// handle termination when iterating correctly.
 struct clist {
-    struct clist_elem *head;
+    struct clist_elem *link;
 };
 
 // -----------------------------------------------------------------------------
@@ -64,27 +68,186 @@ struct clist {
 /// @param clist The circular linked list to initialise
 void clist_init(/*@out@*/ struct clist *clist);
 
-
+/// Destroys a circularly linked list. No other operations are permitted after
+/// destroying unless clist_init is called on the list again. This function
+/// removes all elements from the list and calls destroy on their data unless
+/// destroy is NULL.
+///
+/// COMPLEXITY: O(n)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param cllist The list to destroy
+/// @param destroy The function to use to free all element data.
 void clist_destroy(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data));
+
+// ###
+struct list_elem* clist_get_head(/*@notnull@*/ struct clist *clist);
+
+// ###
+struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
+
+/// Inserts an element into a circularly linked list at the head.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param clist The list to insert at the head of
+/// @param data The data the newly created element should point to
+///
+/// @return 0 for success, -1 for failure
 int clist_ins_head(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data);
+
+// ###
+int clist_ins_tail(/*@notnull@*/ struct clist *clist,
+                   /*@null@*/ void *data);
+
+/// Inserts an element to a circularly linked list after the given element.
+///
+/// COMPLEXITY: O(1)
+///
+/// @param elem The element to insert after
+/// @param data The data the newly created element should point to
+///
+/// @return 0 for success, -1 for failure
 int clist_ins_next(/*@notnull@*/ struct clist *clist,
                    /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data);
+
+/// Inserts an element to a circularly linked list before the given element.
+/// clist is required so that when elem is the list's head element, the list's
+/// head is reset appropriately.
+///
+/// COMPLEXITY: O(1)
+///
+/// @param clist The parent list. Used for resetting the list head
+/// @param elem The element to insert before
+/// @param data The data the newly created element should point to
+///
+/// @return 0 for success, -1 for failure
 int clist_ins_prev(/*@notnull@*/ struct clist *clist,
                    /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data);
+
+/// Removes an element from the head of a circularly-linked list. If destroy is
+/// non-NULL it will be used to free the element's data.
+///
+/// COMPLEXITY: O(1)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param clist The clist to remove from the head of
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
 int clist_rem_head(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data));
+
+// ###
+int clist_rem_tail(/*@notnull@*/ struct clist *clist,
+                   /*@null@*/ void (*destroy)(void *data));
+
+/// Removes an element from a circularly linked list. dlist is required so that
+/// clist->head can be changed if we are removing the head of the list. The
+/// destroyed element will have destroy() called upon elem->data to free it if
+/// destroy is non-NULL.
+///
+/// COMPLEXITY: O(1)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param clist Parent list to remove from
+/// @param elem The element to remove
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
 int clist_rem_elem(/*@notnull@*/ struct clist *clist,
                    /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data));
+
+/// Counts the elements in a clist. This is highly inefficient and probably not
+/// a good use of a linked list.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param dlist Doubly-linked list whose elements to count
+///
+/// @return Number of elements in list.
 int clist_size(/*@notnull@*/ const struct clist *clist);
 
 // -----------------------------------------------------------------------------
 
-// TODO: Macros
+/// A macro for generating for loops - loop over all the elements of a clist
+///
+/// COMPLEXITY: O(n)
+///
+/// @param clist The clist to iterate over
+/// @param name The name used for the iterator
+#define clist_for_each(clist, name)                         \
+         
+// ###
+
+// ### Got to here!
+
+/// A macro for generating for loops - loop over all the elements of a
+/// clist. This safe version allows for removal of the current element
+///
+/// COMPELXITY: O(n)
+///
+/// @param clist The clist to iterate over
+/// @param name The name used for the iterator
+/// @param temp Name to use for temporary storage
+#define clist_for_each_safe(clist, name, temp)                \
+// ###
+
+// ###
+#define clist_for_each_rev(clist, name)         \
+// ###
+
+// ###
+#define clist_for_each_rev_safe(clist, name, temp)  \
+// ###
+
+/// A macro for looping over a clist from a given element
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+#define clist_for_each_elem(elem, name)                             \
+// ###
+
+/// A macro for looping over a clist from a given element. Safe against element
+/// destruction.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+/// @param temp Name to use for temporary storage
+#define clist_for_each_elem_safe(elem, name, temp) \
+// ###
+
+/// A macro for looping over a clist from a given element
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+#define clist_for_each_elem_rev(elem, name)                         \
+// ###
+
+/// A macro for looping over a clist from a given element. Safe against element
+/// destruction.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param elem The element to start with
+/// @param name The label to use for the iterator
+/// @param temp Name to use for temporary storage
+#define clist_for_each_elem_rev_safe(elem, name, temp)  \
+// ###
 
 // -----------------------------------------------------------------------------
 

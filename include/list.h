@@ -67,9 +67,9 @@ void list_init(/*@out@*/ struct list *list);
 /// the list and calls the given destroy function on them unless destroy is set
 /// to NULL.
 ///
-/// @warning Passing NULL as destroy may leave you with leaky memory
-///
 /// COMPLEXITY: O(n)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
 ///
 /// @param list The list to destroy
 /// @param destroy The function to use to free all the list element data
@@ -165,14 +165,13 @@ struct list_elem* list_tail(/*@notnull@*/ const struct list *list);
 ///
 /// @param list The list to iterate over
 /// @param name The name used for the iterator
-/// @param temp Name to use for temporary storage
-#define list_for_each_safe(list, name, temp)    \
-    if ((list)->head)                           \
-        for (struct list_elem                   \
-                 * name = (list)->head,         \
-                 * temp = (list)->head->next;   \
-             name;                              \
-             name = temp, temp = temp->next)
+#define list_for_each_safe(list, name)                              \
+    if ((list)->head)                                               \
+        for (struct list_elem                                       \
+                 * name = (list)->head,                             \
+                 * __temp_elem = (list)->head->next;                \
+             name;                                                  \
+             name = __temp_elem, __temp_elem = __temp_elem->next)
 
 /// A macro for looping over a list from a given element
 ///
@@ -190,13 +189,12 @@ struct list_elem* list_tail(/*@notnull@*/ const struct list *list);
 ///
 /// @param elem The element to start with
 /// @param name The label to use for the iterator
-/// @param temp Name to use for temporary storage
-#define list_for_each_elem_safe(elem, name, temp)              \
-    for (struct list_elem                                      \
-             * name = elem,                                    \
-             * temp = elem->next;                              \
-         name;                                                 \
-         name = temp, temp = temp->next)
+#define list_for_each_elem_safe(elem, name)                           \
+    for (struct list_elem                                             \
+             * name = elem,                                           \
+             * __temp_elem = elem->next;                              \
+         name;                                                        \
+         name = __temp_elem, __temp_elem = __temp_elem->next)
 
 // -----------------------------------------------------------------------------
 
