@@ -11,16 +11,10 @@ void list_init(/*@out@*/ struct list *list) {
 
 void list_destroy(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data)) {
-    struct list_elem *l1;
-    struct list_elem *l2;
-
-    l1 = list->head;
-    while (l1) {
-        if (destroy)
-            destroy(l1->data);
-        l2 = l1->next;
-        free(l1);
-        l1 = l2;
+    list_for_each_safe(list, elem) {
+        if (destroy != NULL)
+            destroy(elem->data);
+        free(elem);
     }
 }
 

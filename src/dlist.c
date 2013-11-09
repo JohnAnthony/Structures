@@ -11,21 +11,13 @@ void dlist_init(/*@out@*/ struct dlist *dlist) {
 
 void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    struct dlist_elem *l1;
-    struct dlist_elem *l2;
-
-    if (dlist->head == NULL)
-        return;
-
-    l1 = dlist->head;
-    while (l1) {
+    dlist_for_each_safe(dlist, elem) {
         if (destroy != NULL)
-            destroy(l1->data);
-        l2 = l1->next;
-        free(l1);
-        l1 = l2;
+            destroy(elem->data);
+        free(elem);
     }
 }
+
 // -----------------------------------------------------------------------------
 //                                 Accessors
 // -----------------------------------------------------------------------------

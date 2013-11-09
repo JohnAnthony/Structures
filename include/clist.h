@@ -53,7 +53,7 @@ struct clist_elem {
 /// use a getter function. The "link" member of this struct is an empty list
 /// element used for handle termination when iterating correctly.
 struct clist {
-    struct clist_elem *link;
+    struct clist_elem link;
 };
 
 // -----------------------------------------------------------------------------

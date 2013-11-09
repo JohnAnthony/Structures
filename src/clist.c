@@ -1,31 +1,24 @@
-#include "dlist.h"
+#include "clist.h"
 #include <stdlib.h>
 
 // -----------------------------------------------------------------------------
 //                                 Management
 // -----------------------------------------------------------------------------
 
-void dlist_init(/*@out@*/ struct dlist *dlist) {
-    dlist->head = NULL;
+void clist_init(/*@out@*/ struct clist *clist) {
+    clist->link.next = &clist->link;
+    clist->link.prev = &clist->link;
 }
 
-void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
+void clist_destroy(/*@notnull@*/ struct dlist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    struct dlist_elem *l1;
-    struct dlist_elem *l2;
-
-    if (dlist->head == NULL)
-        return;
-
-    l1 = dlist->head;
-    while (l1) {
+    clist_for_each_safe(clist, elem) {
         if (destroy != NULL)
-            destroy(l1->data);
-        l2 = l1->next;
-        free(l1);
-        l1 = l2;
+            destroy(elem->data);
+        free(elem);
     }
 }
+
 // -----------------------------------------------------------------------------
 //                                 Accessors
 // -----------------------------------------------------------------------------
