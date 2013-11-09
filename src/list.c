@@ -121,10 +121,9 @@ int list_rem_next(/*@notnull@*/ struct list_elem *elem,
 }
 
 int list_size(/*@notnull@*/ const struct list *list) {
-    struct list_elem *elem;
     int count = 0;
 
-    for (elem = list->head; elem; elem = elem->next)
+    list_for_each(list, elem)
         count++;
 
     return count;

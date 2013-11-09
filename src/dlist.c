@@ -62,12 +62,12 @@ int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
     if (elem_new == NULL)
         return -1;
 
-    elem->next->prev = elem_new;
     elem_new->next = elem->next;
-    elem->next = elem_new;
     elem_new->prev = elem;
-    elem_new->data = data;
+    elem_new->next->prev = elem_new;
+    elem_new->prev->next = elem_new;
 
+    elem_new->data = data;
     return 0;
 }
 
@@ -83,12 +83,12 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
     if (dlist->head == elem)
         dlist->head = elem_new;
 
-    elem->prev->next = elem_new;
-    elem_new->prev = elem->prev;
-    elem->prev = elem_new;
     elem_new->next = elem;
-    elem_new->data = data;
+    elem_new->prev = elem->prev;
+    elem_new->next->prev = elem_new;
+    elem_new->prev->next = elem_new;
 
+    elem_new->data = data;
     return 0;
 }
 
@@ -138,10 +138,10 @@ int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
 }
 
 int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
-    struct dlist_elem *elem;
     int count = 0;
 
-    for (elem = dlist->head; elem; elem = elem->next)
+    dlist_for_each(dlist, elem)
         count++;
+
     return count;
 }

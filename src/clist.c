@@ -6,8 +6,8 @@
 // -----------------------------------------------------------------------------
 
 void clist_init(/*@out@*/ struct clist *clist) {
-    clist->link.next = &clist->link;
-    clist->link.prev = &clist->link;
+    clist->link.next = &clist->link.next;
+    clist->link.prev = &clist->link.prev;
 }
 
 void clist_destroy(/*@notnull@*/ struct dlist *clist,
@@ -24,82 +24,65 @@ void clist_destroy(/*@notnull@*/ struct dlist *clist,
 // -----------------------------------------------------------------------------
 
 /*@null@*/
-struct dlist_elem* dlist_get_head(/*@notnull@*/ const struct dlist *dlist) {
-    return dlist->head;
+struct clist_elem* clist_get_head(/*@notnull@*/ const struct clist *clist) {
+    return clist->link.next == &clist->link ? NULL : clist->link.next;
 }
 
 /*@null@*/
-struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist) {
-    struct dlist_elem *elem;
-
-    for (elem = dlist->head; elem->next; elem = elem->next);
-    return elem;
+struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist) {
+    return clist->link.prev == &clist->link ? NULL : clist->link.next;
 }
 
 // -----------------------------------------------------------------------------
 //                                Manipulation
 // -----------------------------------------------------------------------------
 
-int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
+int clist_ins_head(/*@notnull@*/ struct dlist *clist,
                    /*@null@*/ void *data) {
-    struct dlist_elem *elem;
-
-    elem = malloc(sizeof(struct dlist_elem));
-    if (elem == NULL)
-        return -1;
-    elem->next = dlist->head;
-    elem->prev = NULL;
-    elem->data = data;
-    dlist->head = elem;
-
-    return 0;
+    return clist_ins_next(&clist->link, data);
 }
 
-int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
+int clist_ins_next(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data) {
-    struct dlist_elem *elem_new;
+    struct clist_elem *elem_new;
 
-    elem_new = malloc(sizeof(struct dlist_elem));
+    elem_new = malloc(sizeof(struct clist_elem));
     if (elem_new == NULL)
         return -1;
 
-    elem->next->prev = elem_new;
     elem_new->next = elem->next;
-    elem->next = elem_new;
     elem_new->prev = elem;
-    elem_new->data = data;
+    elem_new->next->prev = elem_new;
+    elem_new->prev->next = elem_new;
 
+    elem_new->data = data;
     return 0;
 }
 
-int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
-                   /*@notnull@*/ struct dlist_elem *elem,
+int clist_ins_prev(/*@notnull@*/ struct clist *clist,
+                   /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data) {
-    struct dlist_elem *elem_new;
+    struct clist_elem *elem_new;
 
-    elem_new = malloc(sizeof(struct dlist_elem));
+    elem_new = malloc(sizeof(struct clist_elem));
     if (elem_new == NULL)
         return -1;
 
-    if (dlist->head == elem)
-        dlist->head = elem_new;
-
-    elem->prev->next = elem_new;
-    elem_new->prev = elem->prev;
-    elem->prev = elem_new;
     elem_new->next = elem;
-    elem_new->data = data;
+    elem_new->prev = elem->prev;
+    elem_new->next->prev = elem_new;
+    elem_new->prev->next = elem_new;
 
+    elem_new->data = data;
     return 0;
 }
 
-int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
+int clist_ins_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data) {
-    return dlist_ins_next(dlist_get_tail(dlist), data);
+    return clist_ins_prev(&clist->link, data);
 }
 
-int dlist_rem_elem(/*@notnull@*/ struct dlist *dlist,
-                   /*@notnull@*/ struct dlist_elem *elem,
+int dlist_rem_elem(/*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data)) {
     if (elem->next)
         elem->next->prev = elem->prev;
@@ -138,11 +121,11 @@ int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
     return dlist_rem_elem(dlist, dlist_get_tail(dlist), destroy);
 }
 
-int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
-    struct dlist_elem *elem;
+int clist_size(/*@notnull@*/ const struct clist *clist) {
     int count = 0;
 
-    for (elem = dlist->head; elem; elem = elem->next)
+    clist_for_each(clist, elem)
         count++;
+
     return count;
 }

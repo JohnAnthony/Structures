@@ -136,13 +136,10 @@ int clist_ins_head(/*@notnull@*/ struct clist *clist,
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int clist_ins_next(/*@notnull@*/ struct clist *clist,
-                   /*@notnull@*/ struct clist_elem *elem,
+int clist_ins_next(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data);
 
 /// Inserts an element to a circularly linked list before the given element.
-/// clist is required so that when elem is the list's head element, the list's
-/// head is reset appropriately.
 ///
 /// COMPLEXITY: O(1)
 ///
@@ -166,10 +163,9 @@ int clist_ins_prev(/*@notnull@*/ struct clist *clist,
 int clist_ins_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data);
 
-/// Removes an element from a circularly linked list. dlist is required so that
-/// clist->head can be changed if we are removing the head of the list. The
-/// destroyed element will have destroy() called upon elem->data to free it if
-/// destroy is non-NULL.
+/// Removes an element from a circularly linked list. The destroyed element
+/// will have destroy() called upon elem->data to free it if destroy is
+/// non-NULL.
 ///
 /// COMPLEXITY: O(1)
 ///
@@ -180,8 +176,7 @@ int clist_ins_tail(/*@notnull@*/ struct clist *clist,
 /// @param destroy Callback function for freeing the element's data
 ///
 /// @return 0 on success, -1 on failure
-int clist_rem_elem(/*@notnull@*/ struct clist *clist,
-                   /*@notnull@*/ struct clist_elem *elem,
+int clist_rem_elem(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data));
 
 /// Removes an element from the head of a circularly-linked list. If destroy is
