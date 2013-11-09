@@ -211,7 +211,7 @@ int clist_rem_tail(/*@notnull@*/ struct clist *clist,
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @param dlist Doubly-linked list whose elements to count
+/// @param dlist Circularly linked list whose elements to count
 ///
 /// @return Number of elements in list.
 int clist_size(/*@notnull@*/ const struct clist *clist);
@@ -266,7 +266,7 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
 /// @param temp Name to use for temporary storage
-#define clist_for_each_rev_safe(clist, name)                  \
+#define clist_for_each_rev_safe(clist, name)                   \
     for (struct clist_elem                                     \
              * name = clist->link.prev,                        \
              * __temp_elem = name->prev;                       \
