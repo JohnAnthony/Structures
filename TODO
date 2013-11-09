@@ -15,11 +15,23 @@ give init and destroy functions meaningful return values
 
 Write a README
 
+Add data structures
+:: clist (circular lists)
+:: stack
+:: queue
+:: set
+:: hasht (hash table)
+:: chasht (chained hash table)
+:: oahasht (open-addressed hash table)
+:: btree (binary tree)
+:: bstree (binary search tree)
+:: heap
+:: pqueue (priority queue)
+:: graph
+
 Unit tests (test.c) for
 :: list
 :: dlist
-
-Add data structures
 :: clist (circular lists)
 :: stack
 :: queue
