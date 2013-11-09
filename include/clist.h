@@ -166,6 +166,24 @@ int clist_ins_prev(/*@notnull@*/ struct clist *clist,
 int clist_ins_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data);
 
+/// Removes an element from a circularly linked list. dlist is required so that
+/// clist->head can be changed if we are removing the head of the list. The
+/// destroyed element will have destroy() called upon elem->data to free it if
+/// destroy is non-NULL.
+///
+/// COMPLEXITY: O(1)
+///
+/// @warning Passing NULL as destroy may leave you with leaky memory
+///
+/// @param clist Parent list to remove from
+/// @param elem The element to remove
+/// @param destroy Callback function for freeing the element's data
+///
+/// @return 0 on success, -1 on failure
+int clist_rem_elem(/*@notnull@*/ struct clist *clist,
+                   /*@notnull@*/ struct clist_elem *elem,
+                   /*@null@*/ void (*destroy)(void *data));
+
 /// Removes an element from the head of a circularly-linked list. If destroy is
 /// non-NULL it will be used to free the element's data.
 ///
@@ -192,24 +210,6 @@ int clist_rem_head(/*@notnull@*/ struct clist *clist,
 ///
 /// @return 0 on success, -1 on failure
 int clist_rem_tail(/*@notnull@*/ struct clist *clist,
-                   /*@null@*/ void (*destroy)(void *data));
-
-/// Removes an element from a circularly linked list. dlist is required so that
-/// clist->head can be changed if we are removing the head of the list. The
-/// destroyed element will have destroy() called upon elem->data to free it if
-/// destroy is non-NULL.
-///
-/// COMPLEXITY: O(1)
-///
-/// @warning Passing NULL as destroy may leave you with leaky memory
-///
-/// @param clist Parent list to remove from
-/// @param elem The element to remove
-/// @param destroy Callback function for freeing the element's data
-///
-/// @return 0 on success, -1 on failure
-int clist_rem_elem(/*@notnull@*/ struct clist *clist,
-                   /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data));
 
 /// Counts the elements in a clist. This is highly inefficient and probably not

@@ -62,11 +62,6 @@ int dlist_ins_head(/*@notnull@*/ struct dlist *dlist,
     return 0;
 }
 
-int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
-                   /*@null@*/ void *data) {
-    return dlist_ins_next(dlist_get_tail(dlist), data);
-}
-
 int dlist_ins_next(/*@notnull@*/ struct dlist_elem *elem,
                    /*@null@*/ void *data) {
     struct dlist_elem *elem_new;
@@ -103,6 +98,11 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
     elem_new->data = data;
 
     return 0;
+}
+
+int dlist_ins_tail(/*@notnull@*/ struct dlist *dlist,
+                   /*@null@*/ void *data) {
+    return dlist_ins_next(dlist_get_tail(dlist), data);
 }
 
 int dlist_rem_elem(/*@notnull@*/ struct dlist *dlist,
