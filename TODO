@@ -1,22 +1,11 @@
-Eliminate splint warnings
-:: src/list.c  :: 10 warnings
-:: src/dlist.c :: 32 warnings
-:: Total       :: 38 warnings
-
 Add Doxygen to makefile
 
+Fix splint checking
 Add splint tests to makefile
-
-give init and destroy functions meaningful return values
-:: include/list.h
-:: src/list.c
-:: include/dlist.h
-:: src/dlist.c
 
 Write a README
 
 Add data structures
-:: clist (circular lists)
 :: stack
 :: queue
 :: set
