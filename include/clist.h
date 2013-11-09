@@ -100,7 +100,7 @@ void clist_destroy(/*@notnull@*/ struct clist *clist,
 ///
 // @return The first element of the clist or NULL for an empty dlist
 /*@null@*/
-struct list_elem* clist_get_head(/*@notnull@*/ struct clist *clist);
+struct clist_elem* clist_get_head(/*@notnull@*/ const struct clist *clist);
 
 /// Returns the last element of a circularly linked list. Returns NULL if the
 /// clist is empty.
@@ -111,7 +111,7 @@ struct list_elem* clist_get_head(/*@notnull@*/ struct clist *clist);
 ///
 // @return The first element of the clist or NULL for an empty dlist
 /*@null@*/
-struct list_elem* clist_get_tail(/*@notnull@*/ struct clist *clist);
+struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist);
 
 // -----------------------------------------------------------------------------
 //                                Manipulation
@@ -148,8 +148,7 @@ int clist_ins_next(/*@notnull@*/ struct clist_elem *elem,
 /// @param data The data the newly created element should point to
 ///
 /// @return 0 for success, -1 for failure
-int clist_ins_prev(/*@notnull@*/ struct clist *clist,
-                   /*@notnull@*/ struct clist_elem *elem,
+int clist_ins_prev(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data);
 
 /// Inserts an element into a circularly linked list at the tail end.
@@ -227,9 +226,9 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 ///
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
-#define clist_for_each(clist, name)                         \
-    for (struct clist_elem * name = clist->link->next;      \
-         name != clist->link;                               \
+#define clist_for_each(clist, name)                            \
+    for (struct clist_elem * name = clist->link.next;          \
+         name != &clist->link;                                 \
          name = name->next)
 
 /// A macro for generating for loops - loop over all the elements of a
@@ -240,11 +239,11 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
 /// @param temp Name to use for temporary storage
-#define clist_for_each_safe(clist, name, temp)                \
-    for (struct clist_elem                                    \
-             * name = clist->link->next,                      \
-             * __temp_elem = name->next;                      \
-         name != clist->link;                                 \
+#define clist_for_each_safe(clist, name)                       \
+    for (struct clist_elem                                     \
+             * name = clist->link.next,                        \
+             * __temp_elem = name->next;                       \
+         name != &clist->link;                                 \
          name = __temp_elem, __temp_elem = __temp_elem->next)
 
 /// A macro for generating for loops - loop over all the elements of a clist
@@ -254,9 +253,9 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 ///
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
-#define clist_for_each_rev(clist, name)                     \
-    for (struct clist_elem * name = clist->link->prev;      \
-         name != clist->link;                               \
+#define clist_for_each_rev(clist, name)                        \
+    for (struct clist_elem * name = clist->link.prev;          \
+         name != &clist->link;                                 \
          name = name->prev)
 
 /// A macro for generating for loops - loop over all the elements of a
@@ -267,11 +266,11 @@ int clist_size(/*@notnull@*/ const struct clist *clist);
 /// @param clist The clist to iterate over
 /// @param name The name used for the iterator
 /// @param temp Name to use for temporary storage
-#define clist_for_each_rev_safe(clist, name, temp)            \
-    for (struct clist_elem                                    \
-             * name = clist->link->prev,                      \
-             * __temp_elem = name->prev;                      \
-         name != clist->link;                                 \
+#define clist_for_each_rev_safe(clist, name)                  \
+    for (struct clist_elem                                     \
+             * name = clist->link.prev,                        \
+             * __temp_elem = name->prev;                       \
+         name != &clist->link;                                 \
          name = __temp_elem, __temp_elem = __temp_elem->prev)
 
 // -----------------------------------------------------------------------------

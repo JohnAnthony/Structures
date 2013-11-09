@@ -6,11 +6,11 @@
 // -----------------------------------------------------------------------------
 
 void clist_init(/*@out@*/ struct clist *clist) {
-    clist->link.next = &clist->link.next;
-    clist->link.prev = &clist->link.prev;
+    clist->link.next = &clist->link;
+    clist->link.prev = &clist->link;
 }
 
-void clist_destroy(/*@notnull@*/ struct dlist *clist,
+void clist_destroy(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
     clist_for_each_safe(clist, elem) {
         if (destroy != NULL)
@@ -37,7 +37,7 @@ struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist) {
 //                                Manipulation
 // -----------------------------------------------------------------------------
 
-int clist_ins_head(/*@notnull@*/ struct dlist *clist,
+int clist_ins_head(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data) {
     return clist_ins_next(&clist->link, data);
 }
@@ -59,8 +59,7 @@ int clist_ins_next(/*@notnull@*/ struct clist_elem *elem,
     return 0;
 }
 
-int clist_ins_prev(/*@notnull@*/ struct clist *clist,
-                   /*@notnull@*/ struct clist_elem *elem,
+int clist_ins_prev(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void *data) {
     struct clist_elem *elem_new;
 
@@ -82,15 +81,10 @@ int clist_ins_tail(/*@notnull@*/ struct clist *clist,
     return clist_ins_prev(&clist->link, data);
 }
 
-int dlist_rem_elem(/*@notnull@*/ struct dlist_elem *elem,
+int clist_rem_elem(/*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data)) {
-    if (elem->next)
-        elem->next->prev = elem->prev;
-    if (elem->prev)
-        elem->prev->next = elem->next;
-
-    if (dlist->head == elem)
-        dlist->head = elem->next;
+    elem->next->prev = elem->prev;
+    elem->prev->next = elem->next;
     if (destroy)
         destroy(elem->data);
     free(elem);
@@ -98,27 +92,26 @@ int dlist_rem_elem(/*@notnull@*/ struct dlist_elem *elem,
     return 0;
 }
 
-int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
+int clist_rem_head(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    struct dlist_elem *elem;
+    struct clist_elem *head;
 
-    elem = dlist->head;
-    if (elem == NULL)
+    head = clist_get_head(clist);
+    if (head == NULL)
         return -1;
 
-    dlist->head = elem->next;
-    if (dlist->head != NULL)
-        dlist->head->prev = NULL;
-
-    if (destroy)
-        destroy(elem->data);
-    free(elem);
-    return 0;
+    return clist_rem_elem(head, destroy);
 }
 
-int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
+int clist_rem_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    return dlist_rem_elem(dlist, dlist_get_tail(dlist), destroy);
+    struct clist_elem *head;
+
+    head = clist_get_head(clist);
+    if (head == NULL)
+        return -1;
+
+    return clist_rem_elem(head, destroy);
 }
 
 int clist_size(/*@notnull@*/ const struct clist *clist) {
