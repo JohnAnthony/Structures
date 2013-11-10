@@ -118,7 +118,7 @@ int clist_rem_tail(/*@notnull@*/ struct clist *clist,
     struct clist_elem *pretail;
 
     if (clist->link.next == &clist->link)
-        return NULL;
+        return -1;
 
     for(pretail = clist->link.next;
         pretail->next->next != &clist->link;
