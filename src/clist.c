@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 void clist_init(/*@out@*/ struct clist *clist) {
-    cdlist->link.next = &cdlist->link;
+    clist->link.next = &clist->link;
 }
 
 void clist_destroy(/*@notnull@*/ struct clist *clist,
@@ -27,10 +27,10 @@ struct clist_elem* clist_get_head(/*@notnull@*/ const struct clist *clist) {
     return clist->link.next == &clist->link ? NULL : clist->link.next;
 }
 
-int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist) {
+int clist_size(/*@notnull@*/ const struct clist *clist) {
     int count = 0;
 
-    cdlist_for_each(cdlist, elem)
+    clist_for_each(clist, elem)
         count++;
 
     return count;
@@ -49,7 +49,7 @@ struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist) {
 }
 
 int clist_is_empty(/*@notnull@*/ const struct clist *clist) {
-// ###
+    return !( clist->link.next == &clist->link );
 }
 
 // -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ int clist_ins_next(/*@notnull@*/ struct clist_elem *elem,
 
 int clist_ins_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void *data) {
-    struct clist *elem;
+    struct clist_elem *elem;
 
     elem = clist_get_tail(clist);
     if (elem == NULL)
@@ -91,23 +91,37 @@ int clist_rem_head(/*@notnull@*/ struct clist *clist,
     if (clist_is_empty(clist))
         return -1;
 
-    return cdlist_rem_next(clist->link, destroy);
+    return clist_rem_next(clist, &clist->link, destroy);
 }
 
 int clist_rem_next(/*@notnull@*/ struct clist *clist,
                    /*@notnull@*/ struct clist_elem *elem,
                    /*@null@*/ void (*destroy)(void *data)) {
-// ###
+    struct clist_elem *rm;
+
+    rm = elem->next;
+    if (rm == &clist->link)
+        return -1;
+
+    elem->next->next = elem;
+    elem->next = elem->next->next;
+
+    if (destroy != NULL)
+        destroy(rm->data);
+    free(rm);
+    
     return 0;
 }
 
-int cdlist_rem_tail(/*@notnull@*/ struct cdlist *cdlist,
+int clist_rem_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    struct cdlist_elem *head;
+    struct clist_elem *pretail;
 
-    head = cdlist_get_head(cdlist);
-    if (head == NULL)
-        return -1;
+    if (clist->link.next == &clist->link)
+        return NULL;
 
-    return cdlist_rem_elem(head, destroy);
+    for(pretail = clist->link.next;
+        pretail->next->next != &clist->link;
+        pretail = pretail->next);
+    return clist_rem_next(clist, pretail, destroy);
 }

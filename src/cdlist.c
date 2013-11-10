@@ -105,13 +105,13 @@ int cdlist_rem_head(/*@notnull@*/ struct cdlist *cdlist,
 
 int cdlist_rem_tail(/*@notnull@*/ struct cdlist *cdlist,
                    /*@null@*/ void (*destroy)(void *data)) {
-    struct cdlist_elem *head;
+    struct cdlist_elem *tail;
 
-    head = cdlist_get_head(cdlist);
-    if (head == NULL)
+    tail = cdlist_get_tail(cdlist);
+    if (tail == NULL)
         return -1;
 
-    return cdlist_rem_elem(head, destroy);
+    return cdlist_rem_elem(tail, destroy);
 }
 
 int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist) {
