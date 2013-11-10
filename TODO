@@ -33,3 +33,6 @@ Unit tests (test.c) for
 :: heap
 :: pqueue (priority queue)
 :: graph
+
+Move *list_size to *list_get_size in accessors
+Add *list_is_empty to each list type
