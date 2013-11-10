@@ -157,7 +157,7 @@ int dlist_ins_prev(/*@notnull@*/ struct dlist *dlist,
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @warning clists offer O(1) tail insertion. Consider using a clist
+/// @warning cdlists offer O(1) tail insertion. Consider using a cdlist
 ///
 /// @param list The list to insert at the end of
 /// @param data The data the newly created element should point to
@@ -204,7 +204,7 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @warning clists do this operation in O(1). Consider using a clist
+/// @warning cdlists do this operation in O(1). Consider using a cdlist
 ///
 /// @param list The list to remove from the head of
 /// @param destroy Callback function for freeing the element's data

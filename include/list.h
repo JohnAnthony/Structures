@@ -99,7 +99,7 @@ struct list_elem* list_get_head(/*@notnull@*/ const struct list *list);
 /// Returns the last element of a list. Returns NULL if the list is empty. This
 /// is highly inefficient and you should probably rethink what you're doing.
 ///
-/// @warning clists do this operation in O(1). Consider using a clist
+/// @warning cdlists do this operation in O(1). Consider using a cdlist
 ///
 /// COMPLEXITY: O(n)
 ///
@@ -139,7 +139,7 @@ int list_ins_next(/*@notnull@*/ struct list_elem *elem,
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @warning clists offer O(1) tail insertion. Consider using a clist
+/// @warning cdlists offer O(1) tail insertion. Consider using a cdlist
 ///
 /// @param list The list to insert at the end of
 /// @param data The data the newly created element should point to
@@ -180,7 +180,7 @@ int list_rem_next(/*@notnull@*/ struct list_elem *elem,
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @warning clists do this operation in O(1). Consider using a clist
+/// @warning cdlists do this operation in O(1). Consider using a cdlist
 ///
 /// @param list The llist to remove from the head of
 /// @param destroy Callback function for freeing the element's data

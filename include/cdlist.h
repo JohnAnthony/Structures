@@ -85,7 +85,7 @@ void cdlist_init(/*@out@*/ struct cdlist *cdlist);
 /// @param cdlist The list to destroy
 /// @param destroy The function to use to free all element data.
 void cdlist_destroy(/*@notnull@*/ struct cdlist *cdlist,
-                   /*@null@*/ void (*destroy)(void *data));
+                    /*@null@*/ void (*destroy)(void *data));
 
 // -----------------------------------------------------------------------------
 //                                 Accessors
@@ -98,7 +98,7 @@ void cdlist_destroy(/*@notnull@*/ struct cdlist *cdlist,
 ///
 /// @param cdlist The circular doubly linked list to return the head element of
 ///
-// @return The first element of the cdlist or NULL for an empty dlist
+// @return The first element of the cdlist or NULL for an empty cdlist
 /*@null@*/
 struct cdlist_elem* cdlist_get_head(/*@notnull@*/ const struct cdlist *cdlist);
 
@@ -107,9 +107,9 @@ struct cdlist_elem* cdlist_get_head(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// COMPLEXITY: O(1)
 ///
-/// @param cdlist The circular doubly linked list to return the head element of
+/// @param cdlist The circular doubly linked list to return the tail element of
 ///
-// @return The first element of the cdlist or NULL for an empty dlist
+// @return The first element of the cdlist or NULL for an empty cdlist
 /*@null@*/
 struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist);
 
@@ -126,7 +126,7 @@ struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// @return 0 for success, -1 for failure
 int cdlist_ins_head(/*@notnull@*/ struct cdlist *cdlist,
-                   /*@null@*/ void *data);
+                    /*@null@*/ void *data);
 
 /// Inserts an element to a circular doubly linked list after the given element.
 ///
@@ -137,7 +137,7 @@ int cdlist_ins_head(/*@notnull@*/ struct cdlist *cdlist,
 ///
 /// @return 0 for success, -1 for failure
 int cdlist_ins_next(/*@notnull@*/ struct cdlist_elem *elem,
-                   /*@null@*/ void *data);
+                    /*@null@*/ void *data);
 
 /// Inserts an element to a circular doubly linked list before the given
 /// element.
@@ -150,7 +150,7 @@ int cdlist_ins_next(/*@notnull@*/ struct cdlist_elem *elem,
 ///
 /// @return 0 for success, -1 for failure
 int cdlist_ins_prev(/*@notnull@*/ struct cdlist_elem *elem,
-                   /*@null@*/ void *data);
+                    /*@null@*/ void *data);
 
 /// Inserts an element into a circular doubly linked list at the tail end.
 ///
@@ -161,7 +161,7 @@ int cdlist_ins_prev(/*@notnull@*/ struct cdlist_elem *elem,
 ///
 /// @return 0 for success, -1 for failure
 int cdlist_ins_tail(/*@notnull@*/ struct cdlist *cdlist,
-                   /*@null@*/ void *data);
+                    /*@null@*/ void *data);
 
 /// Removes an element from a circular doubly linked list. The destroyed element
 /// will have destroy() called upon elem->data to free it if destroy is
@@ -177,7 +177,7 @@ int cdlist_ins_tail(/*@notnull@*/ struct cdlist *cdlist,
 ///
 /// @return 0 on success, -1 on failure
 int cdlist_rem_elem(/*@notnull@*/ struct cdlist_elem *elem,
-                   /*@null@*/ void (*destroy)(void *data));
+                    /*@null@*/ void (*destroy)(void *data));
 
 /// Removes an element from the head of a circular doubly linked list. If
 /// destroy is non-NULL it will be used to free the element's data.
@@ -191,7 +191,7 @@ int cdlist_rem_elem(/*@notnull@*/ struct cdlist_elem *elem,
 ///
 /// @return 0 on success, -1 on failure
 int cdlist_rem_head(/*@notnull@*/ struct cdlist *cdlist,
-                   /*@null@*/ void (*destroy)(void *data));
+                    /*@null@*/ void (*destroy)(void *data));
 
 /// Removes an element from the tail of a circular doubly linked list. If
 /// destroy is non-NULL it will be used to free the element's data.
@@ -205,14 +205,14 @@ int cdlist_rem_head(/*@notnull@*/ struct cdlist *cdlist,
 ///
 /// @return 0 on success, -1 on failure
 int cdlist_rem_tail(/*@notnull@*/ struct cdlist *cdlist,
-                   /*@null@*/ void (*destroy)(void *data));
+                    /*@null@*/ void (*destroy)(void *data));
 
 /// Counts the elements in a cdlist. This is highly inefficient and probably not
 /// a good use of a linked list.
 ///
 /// COMPLEXITY: O(n)
 ///
-/// @param dlist Circular doubly linked list whose elements to count
+/// @param cdlist Circular doubly linked list whose elements to count
 ///
 /// @return Number of elements in list.
 int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
@@ -227,9 +227,9 @@ int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// @param cdlist The cdlist to iterate over
 /// @param name The name used for the iterator
-#define cdlist_for_each(cdlist, name)                            \
-    for (struct cdlist_elem * name = cdlist->link.next;          \
-         name != &cdlist->link;                                 \
+#define cdlist_for_each(cdlist, name)                   \
+    for (struct cdlist_elem * name = cdlist->link.next; \
+         name != &cdlist->link;                         \
          name = name->next)
 
 /// A macro for generating for loops - loop over all the elements of a
@@ -239,11 +239,10 @@ int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// @param cdlist The cdlist to iterate over
 /// @param name The name used for the iterator
-/// @param temp Name to use for temporary storage
-#define cdlist_for_each_safe(cdlist, name)                       \
+#define cdlist_for_each_safe(cdlist, name)                      \
     for (struct cdlist_elem                                     \
              * name = cdlist->link.next,                        \
-             * __temp_elem = name->next;                       \
+             * __temp_elem = name->next;                        \
          name != &cdlist->link;                                 \
          name = __temp_elem, __temp_elem = __temp_elem->next)
 
@@ -254,9 +253,9 @@ int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// @param cdlist The cdlist to iterate over
 /// @param name The name used for the iterator
-#define cdlist_for_each_rev(cdlist, name)                        \
-    for (struct cdlist_elem * name = cdlist->link.prev;          \
-         name != &cdlist->link;                                 \
+#define cdlist_for_each_rev(cdlist, name)               \
+    for (struct cdlist_elem * name = cdlist->link.prev; \
+         name != &cdlist->link;                         \
          name = name->prev)
 
 /// A macro for generating for loops - loop over all the elements of a
@@ -266,11 +265,10 @@ int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
 ///
 /// @param cdlist The cdlist to iterate over
 /// @param name The name used for the iterator
-/// @param temp Name to use for temporary storage
-#define cdlist_for_each_rev_safe(cdlist, name)                   \
+#define cdlist_for_each_rev_safe(cdlist, name)                  \
     for (struct cdlist_elem                                     \
              * name = cdlist->link.prev,                        \
-             * __temp_elem = name->prev;                       \
+             * __temp_elem = name->prev;                        \
          name != &cdlist->link;                                 \
          name = __temp_elem, __temp_elem = __temp_elem->prev)
 
