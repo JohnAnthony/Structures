@@ -48,7 +48,7 @@ struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list) {
 }
 
 int list_is_empty(/*@notnull@*/ const struct list *list) {
-    return !!(list->head);
+    return !! list->head;
 }
 
 // -----------------------------------------------------------------------------

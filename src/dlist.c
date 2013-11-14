@@ -45,7 +45,7 @@ struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist) {
 }
 
 int dlist_is_empty(/*@notnull@*/ const struct dlist *dlist) {
-    return !!(dlist->head);
+    return !! dlist->head;
 }
 
 // -----------------------------------------------------------------------------

@@ -25,7 +25,7 @@ void cdlist_destroy(/*@notnull@*/ struct cdlist *cdlist,
 
 /*@null@*/
 struct cdlist_elem* cdlist_get_head(/*@notnull@*/ const struct cdlist *cdlist) {
-    return cdlist->link.next == &cdlist->link ? NULL : cdlist->link.next;
+    return cdlist_is_empty(cdlist) ? NULL : cdlist->link.next;
 }
 
 int cdlist_get_size(/*@notnull@*/ const struct cdlist *cdlist) {
@@ -39,7 +39,7 @@ int cdlist_get_size(/*@notnull@*/ const struct cdlist *cdlist) {
 
 /*@null@*/
 struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist) {
-    return cdlist->link.prev == &cdlist->link ? NULL : cdlist->link.next;
+    return cdlist_is_empty(cdlist) ? NULL : cdlist->link.next;
 }
 
 int cdlist_is_empty(/*@notnull@*/ const struct cdlist *cdlist) {
