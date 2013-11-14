@@ -42,6 +42,10 @@ struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist) {
     return cdlist->link.prev == &cdlist->link ? NULL : cdlist->link.next;
 }
 
+int cdlist_is_empty(/*@notnull@*/ const struct cdlist *cdlist) {
+    return !( cdlist->link.next == &cdlist->link );
+}
+
 // -----------------------------------------------------------------------------
 //                                Manipulation
 // -----------------------------------------------------------------------------

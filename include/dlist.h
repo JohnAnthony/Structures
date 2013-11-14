@@ -122,6 +122,15 @@ int dlist_get_size(/*@notnull@*/ const struct dlist *dlist);
 /*@null@*/
 struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist);
 
+/// Determine whether a doubly linked list is empty
+///
+/// COMPLEXITY: O(1)
+///
+/// @param dlist The dlist to test for emptiness
+///
+/// @return 1 if the dlist contains any elements, else 0
+int dlist_is_empty(/*@notnull@*/ const struct dlist *dlist);
+
 // -----------------------------------------------------------------------------
 //                                Manipulation
 // -----------------------------------------------------------------------------

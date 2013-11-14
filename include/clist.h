@@ -124,7 +124,13 @@ int clist_get_size(/*@notnull@*/ const struct clist *clist);
 /*@null@*/
 struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist);
 
-// ###
+/// Determine whether a circularly linked list is empty
+///
+/// COMPLEXITY: O(1)
+///
+/// @param clist The clist to test for emptiness
+///
+/// @return 1 if the clist contains any elements, else 0
 int clist_is_empty(/*@notnull@*/ const struct clist *clist);
 
 // -----------------------------------------------------------------------------

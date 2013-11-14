@@ -123,6 +123,15 @@ int cdlist_get_size(/*@notnull@*/ const struct cdlist *cdlist);
 /*@null@*/
 struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist);
 
+/// Determine whether a circularly doubly linked list is empty
+///
+/// COMPLEXITY: O(1)
+///
+/// @param cdlist The cdlist to test for emptiness
+///
+/// @return 1 if the cdlist contains any elements, else 0
+int cdlist_is_empty(/*@notnull@*/ const struct cdlist *cdlist);
+
 // -----------------------------------------------------------------------------
 //                                Manipulation
 // -----------------------------------------------------------------------------

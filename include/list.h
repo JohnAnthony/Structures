@@ -118,6 +118,15 @@ int list_get_size(/*@notnull@*/ const struct list *list);
 /*@null@*/
 struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list);
 
+/// Determine whether a list is empty
+///
+/// COMPLEXITY: O(1)
+///
+/// @param list The list to test for emptiness
+///
+/// @return 1 if the list contains any elements, else 0
+int list_is_empty(/*@notnull@*/ const struct list *list);
+
 // -----------------------------------------------------------------------------
 //                                Manipulation
 // -----------------------------------------------------------------------------
