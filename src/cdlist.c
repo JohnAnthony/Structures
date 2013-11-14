@@ -43,7 +43,7 @@ struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist) {
 }
 
 int cdlist_is_empty(/*@notnull@*/ const struct cdlist *cdlist) {
-    return !( cdlist->link.next == &cdlist->link );
+    return cdlist->link.next == &cdlist->link;
 }
 
 // -----------------------------------------------------------------------------

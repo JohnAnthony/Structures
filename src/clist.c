@@ -49,7 +49,7 @@ struct clist_elem* clist_get_tail(/*@notnull@*/ const struct clist *clist) {
 }
 
 int clist_is_empty(/*@notnull@*/ const struct clist *clist) {
-    return !( clist->link.next == &clist->link );
+    return clist->link.next == &clist->link;
 }
 
 // -----------------------------------------------------------------------------
