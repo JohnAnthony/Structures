@@ -24,6 +24,4 @@ Unit tests (test.c) for
 :: clist (circular lists)
 :: cdlists (circular doubly linked lists)
 
-Move *list_size to *list_get_size in accessors
-Add *list_is_empty to each list type
 Add *list_reverse functions?
