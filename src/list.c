@@ -92,10 +92,10 @@ int list_rem_head(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data)) {
     struct list_elem *elem;
 
-    elem = list->head;
-    if (elem == NULL)
+    if (list_is_empty(list))
         return -1;
 
+    elem = list->head;
     list->head = elem->next;
     if (destroy != NULL)
         destroy(elem->data);

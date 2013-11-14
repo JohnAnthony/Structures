@@ -114,7 +114,7 @@ int clist_rem_tail(/*@notnull@*/ struct clist *clist,
                    /*@null@*/ void (*destroy)(void *data)) {
     struct clist_elem *pretail;
 
-    if (clist->link.next == &clist->link)
+    if (clist_is_empty(clist))
         return -1;
 
     for(pretail = clist->link.next;
