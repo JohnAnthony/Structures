@@ -45,8 +45,8 @@ bool test_list(void) {
     list_ins_head(&l, string2);
     list_ins_head(&l, string3);
 
-    while(list_size(&l) > 0) {
-        printf("%d elements in list.\n", list_size(&l));
+    while(list_get_size(&l) > 0) {
+        printf("%d elements in list.\n", list_get_size(&l));
         list_for_each(&l, elem) {
             puts(elem->data);
         }

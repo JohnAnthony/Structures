@@ -27,7 +27,7 @@ struct clist_elem* clist_get_head(/*@notnull@*/ const struct clist *clist) {
     return clist->link.next == &clist->link ? NULL : clist->link.next;
 }
 
-int clist_size(/*@notnull@*/ const struct clist *clist) {
+int clist_get_size(/*@notnull@*/ const struct clist *clist) {
     int count = 0;
 
     clist_for_each(clist, elem)

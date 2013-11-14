@@ -28,6 +28,15 @@ struct cdlist_elem* cdlist_get_head(/*@notnull@*/ const struct cdlist *cdlist) {
     return cdlist->link.next == &cdlist->link ? NULL : cdlist->link.next;
 }
 
+int cdlist_get_size(/*@notnull@*/ const struct cdlist *cdlist) {
+    int count = 0;
+
+    cdlist_for_each(cdlist, elem)
+        count++;
+
+    return count;
+}
+
 /*@null@*/
 struct cdlist_elem* cdlist_get_tail(/*@notnull@*/ const struct cdlist *cdlist) {
     return cdlist->link.prev == &cdlist->link ? NULL : cdlist->link.next;
@@ -112,13 +121,4 @@ int cdlist_rem_tail(/*@notnull@*/ struct cdlist *cdlist,
         return -1;
 
     return cdlist_rem_elem(tail, destroy);
-}
-
-int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist) {
-    int count = 0;
-
-    cdlist_for_each(cdlist, elem)
-        count++;
-
-    return count;
 }

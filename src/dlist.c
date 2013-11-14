@@ -27,6 +27,15 @@ struct dlist_elem* dlist_get_head(/*@notnull@*/ const struct dlist *dlist) {
     return dlist->head;
 }
 
+int dlist_get_size(/*@notnull@*/ const struct dlist *dlist) {
+    int count = 0;
+
+    dlist_for_each(dlist, elem)
+        count++;
+
+    return count;
+}
+
 /*@null@*/
 struct dlist_elem* dlist_get_tail(/*@notnull@*/ const struct dlist *dlist) {
     struct dlist_elem *elem;
@@ -135,13 +144,4 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
 int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data)) {
     return dlist_rem_elem(dlist, dlist_get_tail(dlist), destroy);
-}
-
-int dlist_size(/*@notnull@*/ const struct dlist *dlist) {
-    int count = 0;
-
-    dlist_for_each(dlist, elem)
-        count++;
-
-    return count;
 }

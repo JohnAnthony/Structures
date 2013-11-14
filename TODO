@@ -22,17 +22,8 @@ Unit tests (test.c) for
 :: list
 :: dlist
 :: clist (circular lists)
-:: stack
-:: queue
-:: set
-:: hasht (hash table)
-:: chasht (chained hash table)
-:: oahasht (open-addressed hash table)
-:: btree (binary tree)
-:: bstree (binary search tree)
-:: heap
-:: pqueue (priority queue)
-:: graph
+:: cdlists (circular doubly linked lists)
 
 Move *list_size to *list_get_size in accessors
 Add *list_is_empty to each list type
+Add *list_reverse functions?

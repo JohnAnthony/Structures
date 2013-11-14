@@ -96,6 +96,15 @@ void list_destroy(/*@notnull@*/ struct list *list,
 /*@null@*/
 struct list_elem* list_get_head(/*@notnull@*/ const struct list *list);
 
+/// Counts the elements in a list.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param list List whose elements to count
+///
+/// @return Number of elements in list.
+int list_get_size(/*@notnull@*/ const struct list *list);
+
 /// Returns the last element of a list. Returns NULL if the list is empty. This
 /// is highly inefficient and you should probably rethink what you're doing.
 ///
@@ -188,15 +197,6 @@ int list_rem_next(/*@notnull@*/ struct list_elem *elem,
 /// @return 0 on success, -1 on failure
 int list_rem_tail(/*@notnull@*/ struct list *list,
                   /*@null@*/ void (*destroy)(void *data));
-
-/// Counts the elements in a list.
-///
-/// COMPLEXITY: O(n)
-///
-/// @param list List whose elements to count
-///
-/// @return Number of elements in list.
-int list_size(/*@notnull@*/ const struct list *list);
 
 // -----------------------------------------------------------------------------
 //                               Looping Macros

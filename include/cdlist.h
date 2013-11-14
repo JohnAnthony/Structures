@@ -102,6 +102,16 @@ void cdlist_destroy(/*@notnull@*/ struct cdlist *cdlist,
 /*@null@*/
 struct cdlist_elem* cdlist_get_head(/*@notnull@*/ const struct cdlist *cdlist);
 
+/// Counts the elements in a cdlist. This is highly inefficient and probably not
+/// a good use of a linked list.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param cdlist Circular doubly linked list whose elements to count
+///
+/// @return Number of elements in list.
+int cdlist_get_size(/*@notnull@*/ const struct cdlist *cdlist);
+
 /// Returns the last element of a circular doubly linked list. Returns NULL if
 /// the cdlist is empty.
 ///
@@ -206,16 +216,6 @@ int cdlist_rem_head(/*@notnull@*/ struct cdlist *cdlist,
 /// @return 0 on success, -1 on failure
 int cdlist_rem_tail(/*@notnull@*/ struct cdlist *cdlist,
                     /*@null@*/ void (*destroy)(void *data));
-
-/// Counts the elements in a cdlist. This is highly inefficient and probably not
-/// a good use of a linked list.
-///
-/// COMPLEXITY: O(n)
-///
-/// @param cdlist Circular doubly linked list whose elements to count
-///
-/// @return Number of elements in list.
-int cdlist_size(/*@notnull@*/ const struct cdlist *cdlist);
 
 // -----------------------------------------------------------------------------
 //                               Looping Macros

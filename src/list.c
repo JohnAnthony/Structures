@@ -27,6 +27,15 @@ struct list_elem* list_get_head(/*@notnull@*/ const struct list *list) {
     return list->head;
 }
 
+int list_get_size(/*@notnull@*/ const struct list *list) {
+    int count = 0;
+
+    list_for_each(list, elem)
+        count++;
+
+    return count;
+}
+
 /*@null@*/
 struct list_elem* list_get_tail(/*@notnull@*/ const struct list *list) {
     struct list_elem *elem;
@@ -118,13 +127,4 @@ int list_rem_next(/*@notnull@*/ struct list_elem *elem,
         destroy(elem->data);
     free(target);
     return 0;
-}
-
-int list_size(/*@notnull@*/ const struct list *list) {
-    int count = 0;
-
-    list_for_each(list, elem)
-        count++;
-
-    return count;
 }

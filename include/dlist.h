@@ -100,6 +100,16 @@ void dlist_destroy(/*@notnull@*/ struct dlist *dlist,
 /*@null@*/
 struct dlist_elem* dlist_get_head(/*@notnull@*/ const struct dlist *dlist);
 
+/// Counts the elements in a dlist. This is highly inefficient and probably not
+/// a good use of a linked list.
+///
+/// COMPLEXITY: O(n)
+///
+/// @param dlist Doubly-linked list whose elements to count
+///
+/// @return Number of elements in dlist.
+int dlist_get_size(/*@notnull@*/ const struct dlist *dlist);
+
 /// Returns the last element of a doubly-linked list. Returns NULL if the dlist
 /// is empty. This is highly inefficient and you should probably rethink what
 /// you're doing.
@@ -212,16 +222,6 @@ int dlist_rem_head(/*@notnull@*/ struct dlist *dlist,
 /// @return 0 on success, -1 on failure
 int dlist_rem_tail(/*@notnull@*/ struct dlist *dlist,
                    /*@null@*/ void (*destroy)(void *data));
-
-/// Counts the elements in a dlist. This is highly inefficient and probably not
-/// a good use of a linked list.
-///
-/// COMPLEXITY: O(n)
-///
-/// @param dlist Doubly-linked list whose elements to count
-///
-/// @return Number of elements in dlist.
-int dlist_size(/*@notnull@*/ const struct dlist *dlist);
 
 // -----------------------------------------------------------------------------
 //                               Looping Macros
